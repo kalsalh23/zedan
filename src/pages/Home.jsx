@@ -18,8 +18,8 @@ function OffersBanner({ offers }) {
           to="/shop"
           className="group relative flex items-center gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-soft md:p-8"
         >
-          <div className="pointer-events-none absolute -left-20 -top-20 size-56 rounded-full bg-flame/25 blur-[80px]" />
-          <div className="pointer-events-none absolute -bottom-24 right-1/3 size-56 rounded-full bg-accent/30 blur-[80px]" />
+          <div className="pointer-events-none absolute -left-20 -top-20 size-56 rounded-full bg-flame/30 blur-[80px]" />
+          <div className="pointer-events-none absolute -bottom-24 right-1/3 size-56 rounded-full bg-white/10 blur-[80px]" />
           <div className="relative flex-1 min-w-0">
             <span className="inline-block rounded-full bg-flame px-3.5 py-1.5 text-xs font-extrabold text-white shadow-card">
               خصم {o.discount}
@@ -30,7 +30,7 @@ function OffersBanner({ offers }) {
                 {o.description}
               </p>
             )}
-            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent px-6 py-2.5 text-xs font-bold shadow-glow transition group-hover:bg-accent-dark active:scale-95">
+            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-xs font-extrabold text-ink transition group-hover:bg-silver-100 active:scale-95">
               تسوق العرض <ArrowLeft className="size-3.5" />
             </span>
           </div>

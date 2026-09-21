@@ -60,7 +60,7 @@ export default function Dashboard() {
     { label: 'منتجات متوفرة', value: stats.available, icon: CheckCircle2, bg: 'bg-emerald-50', fg: 'text-emerald-500' },
     { label: 'مخزون منخفض', value: stats.lowStock, icon: AlertTriangle, bg: 'bg-amber-50', fg: 'text-amber-500' },
     { label: 'عدد الطلبات', value: stats.orders, icon: Receipt, bg: 'bg-sky-50', fg: 'text-sky-500' },
-    { label: 'إجمالي المبيعات', value: formatPrice(stats.sales), icon: DollarSign, bg: 'bg-accent text-white', fg: 'text-white', dark: true },
+    { label: 'إجمالي المبيعات', value: formatPrice(stats.sales), icon: DollarSign, bg: 'bg-white/10', fg: 'text-white', dark: true },
   ]
 
   return (

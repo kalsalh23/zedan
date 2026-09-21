@@ -39,10 +39,10 @@ export default function ProductCard({ product }) {
               <Recycle className="size-3" /> مستعمل
             </span>
           ) : (
-            <span className="rounded-full bg-accent px-2.5 py-1 text-[10px] font-bold text-white">جديد</span>
+            <span className="rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-bold text-ink shadow-card">جديد</span>
           )}
           {p.network === '5G' && (
-            <span className="flex w-fit items-center gap-1 rounded-full bg-white px-2 py-1 text-[10px] font-bold text-accent shadow-card">
+            <span className="flex w-fit items-center gap-1 rounded-full bg-white/95 px-2 py-1 text-[10px] font-bold text-ink shadow-card">
               <Signal className="size-3" /> 5G
             </span>
           )}

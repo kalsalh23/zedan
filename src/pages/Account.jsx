@@ -107,7 +107,7 @@ export default function Account() {
           href={`tel:${STORE_PHONE}`}
           className="flex items-center gap-4 rounded-2xl bg-white p-4 shadow-card transition hover:shadow-soft"
         >
-          <span className="flex size-11 items-center justify-center rounded-xl bg-paper text-accent">
+          <span className="flex size-11 items-center justify-center rounded-xl bg-paper text-ink">
             <Phone className="size-5" />
           </span>
           <span className="flex-1">
@@ -121,7 +121,7 @@ export default function Account() {
           href={`mailto:${STORE_EMAIL}`}
           className="flex items-center gap-4 rounded-2xl bg-white p-4 shadow-card transition hover:shadow-soft"
         >
-          <span className="flex size-11 items-center justify-center rounded-xl bg-paper text-flame">
+          <span className="flex size-11 items-center justify-center rounded-xl bg-paper text-ink">
             <Mail className="size-5" />
           </span>
           <span className="flex-1">

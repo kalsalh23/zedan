@@ -125,10 +125,10 @@ export default function Product() {
                 <Recycle className="size-3.5" /> مستعمل
               </span>
             ) : (
-              <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-bold text-accent">جديد</span>
+              <span className="rounded-full bg-silver-200 px-3 py-1 text-xs font-bold text-ink">جديد</span>
             )}
-            <span className="flex items-center gap-1 rounded-full bg-paper px-3 py-1 text-xs font-bold text-ink">
-              <Signal className="size-3.5 text-accent" /> {p.network}
+            <span className="flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-bold text-ink shadow-card">
+              <Signal className="size-3.5" /> {p.network}
             </span>
             {used && ud.overall_condition && (
               <span className="rounded-full bg-paper px-3 py-1 text-xs font-bold text-silver-500">الحالة: {ud.overall_condition}</span>
@@ -170,7 +170,7 @@ export default function Product() {
                 addToCart(p)
                 navigate('/checkout')
               }}
-              className={`flex items-center justify-center gap-2 rounded-full bg-accent py-3.5 text-sm font-bold text-white shadow-glow transition hover:bg-accent-dark active:scale-95 ${!available && 'pointer-events-none opacity-40'}`}
+              className={`flex items-center justify-center gap-2 rounded-full bg-wa py-3.5 text-sm font-bold text-white transition hover:brightness-95 active:scale-95 ${!available && 'pointer-events-none opacity-40'}`}
             >
               <Store className="size-4" /> اطلب الآن
             </a>

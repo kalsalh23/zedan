@@ -53,7 +53,7 @@ function sdRoundRect(px, py, cx, cy, hw, hh, r) {
   return Math.min(Math.max(qx, qy), 0) + Math.hypot(ox, oy) - r
 }
 
-const BG = [37, 99, 235] // #2563EB
+const BG = [9, 9, 11] // #09090B
 const FG = [255, 255, 255]
 
 function drawIcon(S, { fullBleed }) {

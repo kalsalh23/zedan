@@ -67,7 +67,7 @@ export const imgFallback = (e) => {
     el.src =
       'data:image/svg+xml,' +
       encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" rx="24" fill="#F1F5F9"/><text x="200" y="205" font-size="26" text-anchor="middle" fill="#2563EB" font-family="sans-serif">Mobily Bro</text></svg>`
+        `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" rx="24" fill="#F4F4F5"/><text x="200" y="205" font-size="26" text-anchor="middle" fill="#09090B" font-family="sans-serif">Mobily Bro</text></svg>`
       )
   }
 }

@@ -106,7 +106,7 @@ export default function AdminLayout() {
                   end={l.end}
                   className={({ isActive }) =>
                     `flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-bold transition ${
-                      isActive ? 'bg-accent text-white shadow-glow' : 'text-silver-300 hover:bg-white/10 hover:text-white'
+                      isActive ? 'bg-white text-ink shadow-card' : 'text-silver-300 hover:bg-white/10 hover:text-white'
                     }`
                   }
                 >

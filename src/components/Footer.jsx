@@ -9,24 +9,24 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-accent">
-              <Plus className="size-5 text-white" strokeWidth={3} />
+            <span className="flex size-9 items-center justify-center rounded-xl bg-white">
+              <Plus className="size-5 text-ink" strokeWidth={3} />
             </span>
-            <span className="text-lg font-extrabold">
-              Mobily <span className="text-sky-400">Bro</span>
+            <span className="text-lg font-extrabold text-white">
+              Mobily <span className="text-silver-300">Bro</span>
             </span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-silver-400">
             وجهتك الأولى للهواتف الذكية الجديدة والمستعملة بحالة ممتازة، مع أفضل الإكسسوارات وأسعار تنافسية. اطلب الآن واستلم من المحل أو نوصل حتى باب بيتك.
           </p>
-          <a
-            href={STORE_FACEBOOK}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-bold transition hover:bg-white/20"
-          >
-            <Facebook className="size-4 text-sky-400" /> صفحتنا على فيسبوك
-          </a>
+            <a
+              href={STORE_FACEBOOK}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 transition hover:text-white"
+            >
+              <Facebook className="size-4 text-silver-300" /> صفحتنا على فيسبوك
+            </a>
         </div>
 
         <div>
@@ -47,10 +47,10 @@ export default function Footer() {
               <MessageCircle className="size-4 text-wa" /> واتساب: <span dir="ltr">{WHATSAPP_DISPLAY}</span>
             </a>
             <a href={`tel:${STORE_PHONE}`} className="flex items-center gap-2 transition hover:text-white">
-              <Phone className="size-4 text-accent" /> اتصال: <span dir="ltr">{STORE_PHONE}</span>
+              <Phone className="size-4 text-white" /> اتصال: <span dir="ltr">{STORE_PHONE}</span>
             </a>
             <a href={`mailto:${STORE_EMAIL}`} className="flex items-center gap-2 transition hover:text-white">
-              <Mail className="size-4 text-flame" /> <span dir="ltr">{STORE_EMAIL}</span>
+              <Mail className="size-4 text-white" /> <span dir="ltr">{STORE_EMAIL}</span>
             </a>
             <p className="flex items-center gap-2"><MapPin className="size-4 text-silver-500" /> المدينة — الشارع الرئيسي</p>
             <a
