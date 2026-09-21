@@ -92,6 +92,7 @@ export default function Header() {
     { to: '/used', label: 'أجهزة مستعملة' },
     { to: '/shop', label: 'المتجر' },
     { to: '/compare', label: 'المقارنة', badge: compare.length },
+    { to: '/about', label: 'من نحن' },
   ]
 
   const iconBtn = 'relative flex size-10 items-center justify-center rounded-full text-ink transition hover:bg-paper active:scale-90'

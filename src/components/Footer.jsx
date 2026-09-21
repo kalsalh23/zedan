@@ -37,6 +37,7 @@ export default function Footer() {
             <li><Link to="/compare" className="transition hover:text-white">مقارنة الهواتف</Link></li>
             <li><Link to="/favorites" className="transition hover:text-white">المفضلة</Link></li>
             <li><Link to="/orders" className="transition hover:text-white">طلباتي</Link></li>
+            <li><Link to="/about" className="transition hover:text-white">من نحن</Link></li>
           </ul>
         </div>
 
