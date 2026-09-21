@@ -1,19 +1,29 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Package, Heart, MapPin, MessageCircle, LogOut, ChevronLeft, ShieldCheck, UserCircle2, HelpCircle, Phone, Mail } from 'lucide-react'
+import { Package, Heart, MapPin, MessageCircle, LogOut, ChevronLeft, ShieldCheck, UserCircle2, Phone, Mail, Download } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useApp } from '../store/AppContext'
 import { useTitle } from '../lib/hooks'
 import { whatsappLink } from '../lib/format'
 import { WHATSAPP_DISPLAY, STORE_PHONE, STORE_EMAIL } from '../lib/constants'
 import { Confirm } from '../components/UI'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Login from './Login'
 
 export default function Account() {
   useTitle('حسابي')
   const { user, isAdmin, profile } = useApp()
   const [confirmOut, setConfirmOut] = useState(false)
+  const [installEvt, setInstallEvt] = useState(null)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const onPrompt = (e) => {
+      e.preventDefault()
+      setInstallEvt(e)
+    }
+    window.addEventListener('beforeinstallprompt', onPrompt)
+    return () => window.removeEventListener('beforeinstallprompt', onPrompt)
+  }, [])
 
   if (!user) return <Login />
 
@@ -60,6 +70,22 @@ export default function Account() {
             <ChevronLeft className="size-5 text-silver-400" />
           </Link>
         ))}
+
+        {installEvt && (
+          <button
+            onClick={() => installEvt.prompt()}
+            className="flex w-full items-center gap-4 rounded-2xl bg-accent-soft p-4 text-right shadow-card transition hover:shadow-soft"
+          >
+            <span className="flex size-11 items-center justify-center rounded-xl bg-accent text-white">
+              <Download className="size-5" />
+            </span>
+            <span className="flex-1">
+              <span className="block font-extrabold text-accent">ثبّت Mobily Bro كتطبيق على جهازك</span>
+              <span className="block text-xs text-silver-500">أيقونة على الشاشة الرئيسية وفتح أسرع كالتطبيقات</span>
+            </span>
+            <ChevronLeft className="size-5 text-silver-400" />
+          </button>
+        )}
 
         <a
           href={whatsappLink('مرحبًا، أحتاج دعمًا بخصوص طلبي 🙏')}
