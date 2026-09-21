@@ -323,7 +323,7 @@ export default function ProductForm() {
       )}
 
       <label className="flex w-fit items-center gap-2 text-sm font-bold text-ink">
-        <input type="checkbox" checked={form.is_active} onChange={(e) => set({ is_active: e.target.checked })} className="size-4 accent-[#6C2BD9]" />
+        <input type="checkbox" checked={form.is_active} onChange={(e) => set({ is_active: e.target.checked })} className="size-4 accent-[#09090B]" />
         المنتج معروض في المتجر
       </label>
 

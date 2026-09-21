@@ -111,7 +111,7 @@ export default function AdminOffers() {
             <div className="grid max-h-44 gap-1.5 overflow-y-auto sm:grid-cols-2">
               {filteredProducts.map((p) => (
                 <label key={p.id} className="flex cursor-pointer items-center gap-2 rounded-xl bg-paper px-3 py-2 text-xs font-bold text-ink">
-                  <input type="checkbox" checked={editing.product_ids.includes(p.id)} onChange={() => toggleProduct(p.id)} className="size-4 accent-[#6C2BD9]" />
+                  <input type="checkbox" checked={editing.product_ids.includes(p.id)} onChange={() => toggleProduct(p.id)} className="size-4 accent-[#09090B]" />
                   <span className="line-clamp-1">{p.name}</span>
                 </label>
               ))}
@@ -119,7 +119,7 @@ export default function AdminOffers() {
           </div>
 
           <label className="flex w-fit items-center gap-2 text-sm font-bold text-ink">
-            <input type="checkbox" checked={editing.is_active} onChange={(e) => setEditing({ ...editing, is_active: e.target.checked })} className="size-4 accent-[#6C2BD9]" />
+            <input type="checkbox" checked={editing.is_active} onChange={(e) => setEditing({ ...editing, is_active: e.target.checked })} className="size-4 accent-[#09090B]" />
             العرض مفعّل
           </label>
 
