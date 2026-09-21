@@ -23,6 +23,12 @@ export async function enablePushNotifications() {
   if (permission !== 'granted') return permission
 
   const registration = await navigator.serviceWorker.ready
+  // make sure the device is running the latest service worker (with push handlers)
+  try {
+    await registration.update()
+  } catch {
+    /* ignore */
+  }
   let sub = await registration.pushManager.getSubscription()
   if (!sub) {
     sub = await registration.pushManager.subscribe({

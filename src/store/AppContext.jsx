@@ -185,6 +185,14 @@ export function AppProvider({ children }) {
     setGuestOrders((o) => [{ order, items, local: true }, ...o])
   }, [])
 
+  // auto re-subscribe devices that already approved external notifications
+  useEffect(() => {
+    if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return
+    import('../lib/push')
+      .then(({ enablePushNotifications }) => enablePushNotifications())
+      .catch(() => {})
+  }, [])
+
   const value = {
     cart, addToCart, setQty, removeFromCart, clearCart, cartCount,
     favorites, toggleFav, inFav,

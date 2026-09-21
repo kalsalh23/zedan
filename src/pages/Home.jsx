@@ -188,6 +188,45 @@ function TopupBanner() {
   )
 }
 
+function PushEnableBanner() {
+  const { toast } = useApp()
+  const [hidden, setHidden] = useState(false)
+  const [busy, setBusy] = useState(false)
+  if (typeof Notification === 'undefined' || Notification.permission !== 'default' || hidden) return null
+
+  const enable = async () => {
+    setBusy(true)
+    try {
+      const { enablePushNotifications } = await import('../lib/push')
+      const p = await enablePushNotifications()
+      if (p === 'granted') toast('تم التفعيل — ستصلك الإشعارات حتى والتطبيق مغلق 🔔')
+      else if (p === 'denied') toast('رُفض الإذن — فعّله من إعدادات المتصفح', 'error')
+      else if (p === 'unsupported') toast('هذا الجهاز لا يدعم الإشعارات الخارجية', 'error')
+    } catch {
+      toast('تعذر التفعيل — افتح صفحة الإشعارات وحاول مجددًا', 'error')
+    }
+    setBusy(false)
+    setHidden(true)
+  }
+
+  return (
+    <section>
+      <button
+        onClick={enable}
+        disabled={busy}
+        className="flex w-full items-center gap-4 rounded-3xl bg-ink p-5 text-right text-white shadow-soft transition hover:bg-ink-800 disabled:opacity-60 md:p-6"
+      >
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white text-xl text-ink">🔔</span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-sm font-extrabold md:text-base">لا تفوّت جديد المتجر — فعّل الإشعارات الخارجية</span>
+          <span className="block text-xs text-silver-300">تنبيه فوري على شاشة جهازك حتى والتطبيق مغلق · الأجهزة الجديدة والعروض</span>
+        </span>
+        <span className="shrink-0 rounded-full bg-white px-5 py-2.5 text-xs font-extrabold text-ink">تفعيل</span>
+      </button>
+    </section>
+  )
+}
+
 export default function Home() {
   useTitle('الرئيسية')
   const [newPhones, setNewPhones] = useState([])
@@ -220,6 +259,7 @@ export default function Home() {
 
   return (
     <div className="space-y-10">
+      <PushEnableBanner />
       <OffersCarousel offers={offers} />
       <Categories categories={categories} />
       <ProductRow
