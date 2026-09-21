@@ -24,7 +24,7 @@ export default function AdminOrders() {
       .then(({ data }) => {
         setOrders(data || [])
         setLoading(false)
-      })
+      }).catch(() => setLoading(false))
   }, [])
 
   const filtered = useMemo(

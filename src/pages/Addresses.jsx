@@ -29,6 +29,8 @@ export default function Addresses() {
       .then(({ data }) => {
         setList(data || [])
         setLoading(false)
+      }).catch(() => {
+        setLoading(false)
       })
   }, [user])
 

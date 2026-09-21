@@ -1,7 +1,8 @@
-import { Smartphone, Recycle, Headphones, Plug, ShieldCheck, Watch, Puzzle, Box } from 'lucide-react'
+import { Smartphone, Recycle, Headphones, Plug, ShieldCheck, Watch, Puzzle, Tablet, Box } from 'lucide-react'
 
 const MAP = {
   smartphone: Smartphone,
+  tablet: Tablet,
   recycle: Recycle,
   headphones: Headphones,
   plug: Plug,

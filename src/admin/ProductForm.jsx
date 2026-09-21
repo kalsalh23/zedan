@@ -109,7 +109,7 @@ export default function ProductForm() {
   const [loading, setLoading] = useState(editing)
 
   useEffect(() => {
-    supabase.from('categories').select('*').order('sort_order').then(({ data }) => setCategories(data || []))
+    supabase.from('categories').select('*').order('sort_order').then(({ data }) => setCategories(data || [])).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export default function ProductForm() {
           setImages(sorted.map((i) => i.url))
         }
         setLoading(false)
-      })
+      }).catch(() => setLoading(false))
   }, [id, editing])
 
   const set = (patch) => setForm((f) => ({ ...f, ...patch }))
@@ -178,6 +178,11 @@ export default function ProductForm() {
         const { data, error } = await supabase.from('products').insert(payload).select().single()
         if (error) throw error
         productId = data.id
+        // notify customers about the new device
+        supabase
+          .from('notifications')
+          .insert({ type: 'product', title: '📱 وصل حديثًا إلى المتجر', body: payload.name, image_url: payload.main_image, product_id: productId })
+          .then(() => {}, () => {})
       }
 
       // sync images

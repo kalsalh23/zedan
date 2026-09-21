@@ -46,7 +46,7 @@ export default function AdminOffers() {
       setList(o.data || [])
       setProducts(p.data || [])
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [])
 
   const filteredProducts = useMemo(() => {
@@ -75,8 +75,29 @@ export default function AdminOffers() {
       product_ids: editing.product_ids || [],
       is_active: editing.is_active,
     }
-    const q = editing.id ? supabase.from('offers').update(payload).eq('id', editing.id) : supabase.from('offers').insert(payload)
-    const { error } = await q
+    let savedId = editing.id || null
+    let error = null
+    if (editing.id) {
+      const res = await supabase.from('offers').update(payload).eq('id', editing.id)
+      error = res.error
+    } else {
+      const { data, error: err } = await supabase.from('offers').insert(payload).select('id').single()
+      error = err
+      savedId = data?.id || null
+      if (!err && data) {
+        // notify customers about the new offer
+        supabase
+          .from('notifications')
+          .insert({
+            type: 'offer',
+            title: '🎉 عرض جديد أُضيف الآن',
+            body: `${payload.title}${payload.discount ? ' — خصم ' + payload.discount : ''}`,
+            image_url: payload.image_url,
+            offer_id: savedId,
+          })
+          .then(() => {}, () => {})
+      }
+    }
     setSaving(false)
     if (error) return toast('خطأ: ' + error.message, 'error')
     const { data } = await supabase.from('offers').select('*').order('created_at', { ascending: false })

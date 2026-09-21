@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { Search, Heart, ShoppingCart, User, Plus, X, ChevronLeft } from 'lucide-react'
+import { Search, Heart, ShoppingCart, User, Plus, X, ChevronLeft, Bell } from 'lucide-react'
 import { useApp } from '../store/AppContext'
 import { useDebounce, searchProducts, imgFallback } from '../lib/hooks'
 import { formatPrice } from '../lib/format'
@@ -71,7 +71,7 @@ export function SearchResults({ q, onDone }) {
 }
 
 export default function Header() {
-  const { cartCount, favorites, compare, user } = useApp()
+  const { cartCount, favorites, compare, user, unreadCount } = useApp()
   const [q, setQ] = useState('')
   const [overlay, setOverlay] = useState(false)
   const [dropOpen, setDropOpen] = useState(false)
@@ -149,6 +149,15 @@ export default function Header() {
           <button className={`${iconBtn} md:hidden`} onClick={() => setOverlay(true)} aria-label="بحث">
             <Search className="size-5" />
           </button>
+
+          <Link to="/notifications" className={iconBtn} aria-label="الإشعارات">
+            <Bell className="size-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-0.5 -left-0.5 flex min-w-[18px] items-center justify-center rounded-full bg-flame px-1 text-[10px] font-bold text-white">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </Link>
 
           <Link to="/favorites" className={iconBtn} aria-label="المفضلة">
             <Heart className="size-5" />

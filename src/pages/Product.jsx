@@ -67,6 +67,11 @@ export default function Product() {
         else setP(data)
         setLoading(false)
       })
+      .catch(() => {
+        if (!active) return
+        setFailed(true)
+        setLoading(false)
+      })
     window.scrollTo({ top: 0 })
     return () => {
       active = false
@@ -75,6 +80,7 @@ export default function Product() {
 
   useEffect(() => {
     if (!p) return
+    let active = true
     supabase
       .from('products')
       .select('*, product_images(url, sort_order)')
@@ -82,8 +88,13 @@ export default function Product() {
       .eq('is_active', true)
       .neq('id', p.id)
       .limit(4)
-      .then(({ data }) => active && setRelated(data || []))
-    return () => { active = false }
+      .then(({ data }) => {
+        if (active) setRelated(data || [])
+      })
+      .catch(() => {})
+    return () => {
+      active = false
+    }
   }, [p?.id])
 
   if (loading) return <Spinner />

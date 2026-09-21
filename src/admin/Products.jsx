@@ -27,7 +27,7 @@ export default function AdminProducts() {
       setList(p.data || [])
       setCategories(c.data || [])
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [])
 
   const filtered = useMemo(() => {

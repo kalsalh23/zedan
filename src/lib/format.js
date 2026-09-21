@@ -56,3 +56,16 @@ export const buildWhatsAppMessage = (order, items) => {
 
 export const whatsappLink = (message) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+
+export const timeAgo = (iso) => {
+  if (!iso) return ''
+  const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000)
+  if (s < 60) return 'الآن'
+  const m = Math.floor(s / 60)
+  if (m < 60) return `قبل ${m} دقيقة`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `قبل ${h} ساعة`
+  const d = Math.floor(h / 24)
+  if (d < 30) return `قبل ${d} يوم`
+  return new Date(iso).toLocaleDateString('ar', { day: 'numeric', month: 'long' })
+}

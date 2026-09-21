@@ -31,6 +31,11 @@ export function useProductsByIds(ids) {
         setProducts(data || [])
         setLoading(false)
       })
+      .catch(() => {
+        if (!active) return
+        setProducts([])
+        setLoading(false)
+      })
     return () => {
       active = false
     }

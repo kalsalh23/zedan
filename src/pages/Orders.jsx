@@ -73,6 +73,10 @@ export default function Orders() {
           setItemsMap(map)
         }
         setLoading(false)
+      }).catch(() => {
+        if (!active) return
+        setError(true)
+        setLoading(false)
       })
     return () => {
       active = false

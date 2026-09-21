@@ -22,7 +22,7 @@ export default function AdminCategories() {
     supabase.from('categories').select('*').order('sort_order').then(({ data }) => {
       setList(data || [])
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [])
 
   const save = async (e) => {

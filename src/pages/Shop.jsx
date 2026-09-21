@@ -58,6 +58,11 @@ export default function Shop({ view = 'shop' }) {
         else setAll(data || [])
         setLoading(false)
       })
+      .catch(() => {
+        if (!active) return
+        setError(true)
+        setLoading(false)
+      })
     return () => {
       active = false
     }
@@ -119,6 +124,7 @@ export default function Shop({ view = 'shop' }) {
 
 const CATEGORY_NAMES = {
   smartphones: 'هواتف ذكية',
+  tablets: 'تابلت',
   used: 'أجهزة مستعملة',
   audio: 'سماعات وصوتيات',
   chargers: 'شواحن وكابلات',

@@ -24,6 +24,8 @@ export function AppProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false)
   const [authReady, setAuthReady] = useState(false)
   const [toasts, setToasts] = useState([])
+  const [notifications, setNotifications] = useState([])
+  const [notifSeen, setNotifSeen] = useState(() => localStorage.getItem('mb_notif_seen') || '')
 
   useEffect(() => write('mb_cart', cart), [cart])
   useEffect(() => write('mb_favs', favorites), [favorites])
@@ -125,6 +127,59 @@ export function AppProvider({ children }) {
   const inCompare = useCallback((id) => compare.includes(id), [compare])
   const clearCompare = useCallback(() => setCompare([]), [])
 
+  // ---- notifications ----
+  const unreadCount = useMemo(
+    () => notifications.filter((n) => n.created_at > notifSeen).length,
+    [notifications, notifSeen]
+  )
+
+  const markNotificationsSeen = useCallback(() => {
+    const now = new Date().toISOString()
+    localStorage.setItem('mb_notif_seen', now)
+    setNotifSeen(now)
+  }, [])
+
+  useEffect(() => {
+    let active = true
+    const load = () =>
+      supabase
+        .from('notifications')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(30)
+        .then(({ data }) => {
+          if (active && data) setNotifications(data)
+        })
+        .catch(() => {})
+    load()
+    const channel = supabase
+      .channel('notifications')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notifications' }, (payload) => {
+        const n = payload.new
+        if (!active || !n) return
+        setNotifications((list) => (list.some((x) => x.id === n.id) ? list : [n, ...list].slice(0, 30)))
+        if (n.created_at > (localStorage.getItem('mb_notif_seen') || '')) {
+          toast(n.title, 'success')
+          if (document.hidden && 'Notification' in window && Notification.permission === 'granted') {
+            navigator.serviceWorker?.getRegistration?.().then((reg) => {
+              reg?.showNotification(n.title, {
+                body: n.body || '',
+                icon: '/icons/icon-192.png',
+                data: { url: n.product_id ? '/product/' + n.product_id : '/shop' },
+              })
+            })
+          }
+        }
+      })
+      .subscribe()
+    const poll = setInterval(load, 90000)
+    return () => {
+      active = false
+      supabase.removeChannel(channel)
+      clearInterval(poll)
+    }
+  }, [toast])
+
   // ---- guest orders ----
   const addGuestOrder = useCallback((order, items) => {
     setGuestOrders((o) => [{ order, items, local: true }, ...o])
@@ -138,6 +193,7 @@ export function AppProvider({ children }) {
     profile, setProfile,
     user, isAdmin, authReady,
     toast, toasts,
+    notifications, unreadCount, markNotificationsSeen,
   }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>

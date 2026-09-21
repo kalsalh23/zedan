@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { CATEGORY_LIST } from '../lib/constants'
 import { useTitle, imgFallback } from '../lib/hooks'
@@ -91,25 +91,6 @@ function OffersCarousel({ offers }) {
             <Slide key={o.id} offer={o} />
           ))}
         </div>
-
-        {n > 1 && (
-          <>
-            <button
-              onClick={() => setIdx((i) => (i - 1 + n) % n)}
-              aria-label="العرض السابق"
-              className="absolute right-3 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/30 active:scale-90"
-            >
-              <ChevronRight className="size-5" />
-            </button>
-            <button
-              onClick={() => setIdx((i) => (i + 1) % n)}
-              aria-label="العرض التالي"
-              className="absolute left-3 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/30 active:scale-90"
-            >
-              <ChevronLeft className="size-5" />
-            </button>
-          </>
-        )}
       </div>
 
       {n > 1 && (
@@ -133,7 +114,7 @@ function Categories({ categories }) {
   return (
     <section>
       <SectionTitle title="تسوق حسب القسم" subtitle="كل ما يحتاجه هاتفك في مكان واحد" />
-      <div className="flex gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-7 lg:overflow-visible">
+      <div className="flex gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-8 lg:overflow-visible">
         {list.map((c) => (
           <Link key={c.slug} to={c.slug === 'used' ? '/used' : `/category/${c.slug}`} className="group flex w-20 shrink-0 flex-col items-center gap-2 lg:w-auto">
             <span className="size-16 overflow-hidden rounded-full bg-white shadow-card ring-2 ring-transparent transition duration-300 group-hover:-translate-y-1 group-hover:ring-accent/40 group-hover:shadow-soft lg:size-auto lg:aspect-square lg:w-full">
@@ -168,9 +149,9 @@ function ProductRow({ title, subtitle, to, products, loading, badge }) {
       {loading ? (
         <SkeletonGrid count={4} />
       ) : (
-        <div className="flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible lg:grid-cols-4 md:gap-5">
+        <div className="flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:overflow-visible lg:grid-cols-4 md:gap-4">
           {products.map((p) => (
-            <div key={p.id} className="w-44 shrink-0 md:w-auto">
+            <div key={p.id} className="w-40 shrink-0 md:w-auto">
               <ProductCard product={p} />
             </div>
           ))}
@@ -202,6 +183,8 @@ export default function Home() {
       setOffers(o.data || [])
       setCategories(c.data || [])
       setLoading(false)
+    }).catch(() => {
+      if (active) setLoading(false)
     })
     return () => {
       active = false

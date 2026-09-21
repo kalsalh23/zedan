@@ -15,6 +15,7 @@ export const COMPARE_MAX = 3
 
 export const CATEGORY_LIST = [
   { slug: 'smartphones', name: 'هواتف ذكية', icon: 'smartphone' },
+  { slug: 'tablets', name: 'تابلت', icon: 'tablet' },
   { slug: 'used', name: 'أجهزة مستعملة', icon: 'recycle' },
   { slug: 'audio', name: 'سماعات وصوتيات', icon: 'headphones' },
   { slug: 'chargers', name: 'شواحن وكابلات', icon: 'plug' },
