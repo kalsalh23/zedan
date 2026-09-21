@@ -23,6 +23,7 @@ const Orders = lazyRetry(() => import('./pages/Orders'))
 const Addresses = lazyRetry(() => import('./pages/Addresses'))
 const About = lazyRetry(() => import('./pages/About'))
 const Notifications = lazyRetry(() => import('./pages/Notifications'))
+const Topup = lazyRetry(() => import('./pages/Topup'))
 const AdminLayout = lazyRetry(() => import('./admin/AdminLayout'))
 const Dashboard = lazyRetry(() => import('./admin/Dashboard'))
 const AdminProducts = lazyRetry(() => import('./admin/Products'))
@@ -89,6 +90,7 @@ export default function App() {
             <Route path="/addresses" element={<Addresses />} />
             <Route path="/about" element={<About />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/topup" element={<Topup />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="products" element={<AdminProducts />} />

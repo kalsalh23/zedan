@@ -161,6 +161,33 @@ function ProductRow({ title, subtitle, to, products, loading, badge }) {
   )
 }
 
+function TopupBanner() {
+  return (
+    <section>
+      <Link
+        to="/topup"
+        className="group relative block overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-soft transition hover:shadow-glow md:p-8"
+      >
+        <div className="pointer-events-none absolute -right-16 -top-16 size-48 rounded-full bg-flame/25 blur-[70px]" />
+        <div className="pointer-events-none absolute -bottom-20 -left-10 size-48 rounded-full bg-white/10 blur-[70px]" />
+        <div className="relative flex items-center gap-5">
+          <span className="text-4xl transition duration-300 group-hover:scale-110 md:text-5xl">⚡</span>
+          <div className="min-w-0 flex-1">
+            <span className="inline-block rounded-full bg-flame px-3 py-1 text-[10px] font-extrabold text-white">جديد</span>
+            <h3 className="mt-2 text-xl font-extrabold md:text-2xl">شحن تطبيقات وألعاب</h3>
+            <p className="mt-1 line-clamp-2 text-xs text-silver-300 md:text-sm">
+              أكثر من 80 لعبة وتطبيق — شدات، جواهر، عملات، بطاقات واشتراكات · الدفع عبر USDT 💰
+            </p>
+          </div>
+          <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-xs font-extrabold text-ink transition group-hover:bg-silver-100 active:scale-95 sm:flex">
+            اطلب شحنك <ArrowLeft className="size-3.5" />
+          </span>
+        </div>
+      </Link>
+    </section>
+  )
+}
+
 export default function Home() {
   useTitle('الرئيسية')
   const [newPhones, setNewPhones] = useState([])
@@ -211,6 +238,7 @@ export default function Home() {
         products={used}
         loading={loading}
       />
+      <TopupBanner />
     </div>
   )
 }

@@ -91,6 +91,7 @@ export default function Header() {
     { to: '/new', label: 'هواتف جديدة' },
     { to: '/used', label: 'أجهزة مستعملة' },
     { to: '/shop', label: 'المتجر' },
+    { to: '/topup', label: 'شحن التطبيقات' },
     { to: '/compare', label: 'المقارنة', badge: compare.length },
     { to: '/about', label: 'من نحن' },
   ]
