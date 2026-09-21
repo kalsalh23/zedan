@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Plus, Pencil, Trash2, Loader2, X } from 'lucide-react'
+import { Plus, Pencil, Trash2, Loader2, X, Upload, ImageIcon } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useApp } from '../store/AppContext'
 import { useTitle } from '../lib/hooks'
@@ -18,6 +18,25 @@ export default function AdminOffers() {
   const [saving, setSaving] = useState(false)
   const [del, setDel] = useState(null)
   const [prodSearch, setProdSearch] = useState('')
+  const [uploading, setUploading] = useState(false)
+
+  const uploadOfferImage = async (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setUploading(true)
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase()
+    const path = `offers/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
+    const { error } = await supabase.storage.from('product-images').upload(path, file, { cacheControl: '3600', upsert: false })
+    if (error) {
+      setUploading(false)
+      return toast('فشل رفع الصورة: ' + error.message, 'error')
+    }
+    const { data } = supabase.storage.from('product-images').getPublicUrl(path)
+    setEditing((f) => ({ ...f, image_url: data.publicUrl }))
+    setUploading(false)
+    toast('تم رفع الصورة ✅')
+  }
 
   useEffect(() => {
     Promise.all([
@@ -99,10 +118,46 @@ export default function AdminOffers() {
             <input className={inputCls} placeholder="الخصم (مثال: 20%)" value={editing.discount} onChange={(e) => setEditing({ ...editing, discount: e.target.value })} />
           </div>
           <textarea className={`${inputCls} resize-none`} rows={2} placeholder="وصف العرض" value={editing.description} onChange={(e) => setEditing({ ...editing, description: e.target.value })} />
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2">
             <input className={inputCls} type="date" value={editing.starts_at || ''} onChange={(e) => setEditing({ ...editing, starts_at: e.target.value })} />
             <input className={inputCls} type="date" value={editing.ends_at || ''} onChange={(e) => setEditing({ ...editing, ends_at: e.target.value })} />
-            <input className={inputCls} dir="ltr" placeholder="رابط صورة البانر" value={editing.image_url || ''} onChange={(e) => setEditing({ ...editing, image_url: e.target.value })} />
+          </div>
+
+          <div className="rounded-2xl border border-silver-100 p-3.5">
+            <p className="mb-2 text-xs font-bold text-silver-500">صورة العرض — تظهر في بانر الصفحة الرئيسية بحجم مناسب</p>
+            {editing.image_url ? (
+              <div className="flex items-center gap-3">
+                <img src={editing.image_url} alt="صورة العرض" className="h-20 w-20 rounded-xl object-cover shadow-card" />
+                <div className="flex flex-1 flex-col gap-2">
+                  <label className={`flex cursor-pointer items-center justify-center gap-1.5 rounded-full bg-ink px-4 py-2 text-xs font-bold text-white ${uploading ? 'opacity-60' : ''}`}>
+                    {uploading ? <Loader2 className="size-3.5 animate-spin" /> : <Upload className="size-3.5" />}
+                    تغيير الصورة
+                    <input type="file" accept="image/*" className="hidden" onChange={uploadOfferImage} disabled={uploading} />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setEditing((f) => ({ ...f, image_url: '' }))}
+                    className="rounded-full bg-paper py-2 text-xs font-bold text-red-500 transition hover:bg-red-50"
+                  >
+                    إزالة الصورة
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <label className={`flex cursor-pointer flex-col items-center gap-1 rounded-xl border-2 border-dashed border-silver-200 bg-white p-5 text-center transition hover:border-accent ${uploading ? 'opacity-60' : ''}`}>
+                {uploading ? <Loader2 className="size-5 animate-spin text-accent" /> : <ImageIcon className="size-5 text-accent" />}
+                <span className="text-xs font-bold text-ink">{uploading ? 'جاري الرفع...' : 'اختر صورة من جهازك'}</span>
+                <span className="text-[10px] text-silver-400">مربعة أو أفقية — تُعرض تلقائيًا بحجم مناسب في البانر</span>
+                <input type="file" accept="image/*" className="hidden" onChange={uploadOfferImage} disabled={uploading} />
+              </label>
+            )}
+            <input
+              className={`${inputCls} mt-2`}
+              dir="ltr"
+              placeholder="أو ألصق رابط صورة مباشر (اختياري)"
+              value={editing.image_url || ''}
+              onChange={(e) => setEditing({ ...editing, image_url: e.target.value })}
+            />
           </div>
 
           <div className="rounded-2xl border border-silver-100 p-3">

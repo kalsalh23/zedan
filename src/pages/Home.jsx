@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { CATEGORY_LIST } from '../lib/constants'
 import { useTitle, imgFallback } from '../lib/hooks'
@@ -8,42 +8,122 @@ import CategoryIcon from '../components/CategoryIcon'
 import ProductCard from '../components/ProductCard'
 import { SectionTitle, SkeletonGrid } from '../components/UI'
 
-function OffersBanner({ offers }) {
-  if (!offers?.length) return null
+function Slide({ offer: o }) {
   return (
-    <section className="space-y-4">
-      {offers.map((o) => (
+    <div className="relative flex w-full shrink-0 items-center gap-4 overflow-hidden rounded-4xl bg-ink p-5 text-white sm:gap-5 md:p-8">
+      <div className="pointer-events-none absolute -left-20 -top-20 size-56 rounded-full bg-flame/25 blur-[80px]" />
+      <div className="pointer-events-none absolute -bottom-24 right-1/3 size-56 rounded-full bg-white/10 blur-[80px]" />
+      <div className="relative min-w-0 flex-1">
+        {o.discount && (
+          <span className="inline-block rounded-full bg-flame px-3.5 py-1.5 text-xs font-extrabold text-white shadow-card">
+            خصم {o.discount}
+          </span>
+        )}
+        <h2 className="mt-3 text-xl font-extrabold md:text-2xl">{o.title}</h2>
+        {o.description && (
+          <p className="mt-1.5 line-clamp-2 max-w-lg text-xs leading-relaxed text-silver-300 md:text-sm">
+            {o.description}
+          </p>
+        )}
         <Link
-          key={o.id}
           to="/shop"
-          className="group relative flex items-center gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-soft md:p-8"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-xs font-extrabold text-ink transition hover:bg-silver-100 active:scale-95"
         >
-          <div className="pointer-events-none absolute -left-20 -top-20 size-56 rounded-full bg-flame/30 blur-[80px]" />
-          <div className="pointer-events-none absolute -bottom-24 right-1/3 size-56 rounded-full bg-white/10 blur-[80px]" />
-          <div className="relative flex-1 min-w-0">
-            <span className="inline-block rounded-full bg-flame px-3.5 py-1.5 text-xs font-extrabold text-white shadow-card">
-              خصم {o.discount}
-            </span>
-            <h2 className="mt-3 text-xl font-extrabold md:text-2xl">{o.title}</h2>
-            {o.description && (
-              <p className="mt-1.5 line-clamp-2 max-w-lg text-xs leading-relaxed text-silver-300 md:text-sm">
-                {o.description}
-              </p>
-            )}
-            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-xs font-extrabold text-ink transition group-hover:bg-silver-100 active:scale-95">
-              تسوق العرض <ArrowLeft className="size-3.5" />
-            </span>
-          </div>
-          {o.image_url && (
-            <img
-              src={o.image_url}
-              alt={o.title}
-              loading="lazy"
-              className="relative hidden h-28 w-28 shrink-0 rounded-2xl object-cover shadow-soft transition duration-300 group-hover:scale-105 md:block"
-            />
-          )}
+          تسوق العرض <ArrowLeft className="size-3.5" />
         </Link>
-      ))}
+      </div>
+      {o.image_url && (
+        <img
+          src={o.image_url}
+          alt={o.title}
+          loading="lazy"
+          className="relative h-24 w-24 shrink-0 rounded-2xl object-cover shadow-soft transition duration-300 hover:scale-105 sm:h-28 sm:w-28 md:h-36 md:w-36"
+        />
+      )}
+    </div>
+  )
+}
+
+function OffersCarousel({ offers }) {
+  const n = offers.length
+  const [idx, setIdx] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const touchX = useRef(null)
+
+  // تقدّم تلقائي — كل إعلان 7 ثوانٍ
+  useEffect(() => {
+    if (n <= 1 || paused) return
+    const t = setInterval(() => setIdx((i) => (i + 1) % n), 7000)
+    return () => clearInterval(t)
+  }, [n, paused, idx])
+
+  useEffect(() => {
+    if (idx >= n) setIdx(0)
+  }, [n, idx])
+
+  if (!n) return null
+
+  const onTouchStart = (e) => {
+    touchX.current = e.touches[0].clientX
+    setPaused(true)
+  }
+  const onTouchEnd = (e) => {
+    if (touchX.current !== null) {
+      const dx = e.changedTouches[0].clientX - touchX.current
+      if (dx > 50) setIdx((i) => (i - 1 + n) % n)
+      else if (dx < -50) setIdx((i) => (i + 1) % n)
+      touchX.current = null
+    }
+    setPaused(false)
+  }
+
+  return (
+    <section>
+      <div
+        className="relative overflow-hidden rounded-4xl shadow-soft"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <div className="flex w-full transition-transform duration-700 ease-out" style={{ transform: `translateX(${idx * 100}%)` }}>
+          {offers.map((o) => (
+            <Slide key={o.id} offer={o} />
+          ))}
+        </div>
+
+        {n > 1 && (
+          <>
+            <button
+              onClick={() => setIdx((i) => (i - 1 + n) % n)}
+              aria-label="العرض السابق"
+              className="absolute right-3 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/30 active:scale-90"
+            >
+              <ChevronRight className="size-5" />
+            </button>
+            <button
+              onClick={() => setIdx((i) => (i + 1) % n)}
+              aria-label="العرض التالي"
+              className="absolute left-3 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur transition hover:bg-white/30 active:scale-90"
+            >
+              <ChevronLeft className="size-5" />
+            </button>
+          </>
+        )}
+      </div>
+
+      {n > 1 && (
+        <div className="mt-3.5 flex items-center justify-center gap-1.5">
+          {offers.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIdx(i)}
+              aria-label={`العرض ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === idx ? 'w-6 bg-ink' : 'w-1.5 bg-silver-300 hover:bg-silver-400'}`}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }
@@ -113,7 +193,7 @@ export default function Home() {
     Promise.all([
       supabase.from('products').select('*, product_images(url, sort_order)').eq('condition', 'new').eq('is_active', true).order('created_at', { ascending: false }).limit(8),
       supabase.from('products').select('*, product_images(url, sort_order)').eq('condition', 'used').eq('is_active', true).order('created_at', { ascending: false }).limit(8),
-      supabase.from('offers').select('*').eq('is_active', true).gte('ends_at', new Date().toISOString().slice(0, 10)).limit(2),
+      supabase.from('offers').select('*').eq('is_active', true).gte('ends_at', new Date().toISOString().slice(0, 10)).limit(6),
       supabase.from('categories').select('*').order('sort_order'),
     ]).then(([n, u, o, c]) => {
       if (!active) return
@@ -130,7 +210,7 @@ export default function Home() {
 
   return (
     <div className="space-y-10">
-      <OffersBanner offers={offers} />
+      <OffersCarousel offers={offers} />
       <Categories categories={categories} />
       <ProductRow
         title="أحدث الهواتف الجديدة"
