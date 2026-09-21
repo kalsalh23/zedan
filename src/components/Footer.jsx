@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Plus, MessageCircle, MapPin, Phone } from 'lucide-react'
-import { CATEGORY_LIST, WHATSAPP_LOCAL } from '../lib/constants'
+import { Plus, MessageCircle, MapPin, Phone, Mail, Facebook } from 'lucide-react'
+import { CATEGORY_LIST, WHATSAPP_DISPLAY, STORE_PHONE, STORE_EMAIL, STORE_FACEBOOK } from '../lib/constants'
 import { whatsappLink } from '../lib/format'
 
 export default function Footer() {
@@ -13,12 +13,20 @@ export default function Footer() {
               <Plus className="size-5 text-white" strokeWidth={3} />
             </span>
             <span className="text-lg font-extrabold">
-              Mobily <span className="text-purple-400">Bro</span>
+              Mobily <span className="text-sky-400">Bro</span>
             </span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-silver-400">
             وجهتك الأولى للهواتف الذكية الجديدة والمستعملة بحالة ممتازة، مع أفضل الإكسسوارات وأسعار تنافسية. اطلب الآن واستلم من المحل أو نوصل حتى باب بيتك.
           </p>
+          <a
+            href={STORE_FACEBOOK}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-bold transition hover:bg-white/20"
+          >
+            <Facebook className="size-4 text-sky-400" /> صفحتنا على فيسبوك
+          </a>
         </div>
 
         <div>
@@ -35,16 +43,23 @@ export default function Footer() {
         <div>
           <h4 className="mb-4 font-bold">تواصل معنا</h4>
           <div className="space-y-3 text-sm text-silver-400">
-            <p className="flex items-center gap-2"><Phone className="size-4 text-purple-400" /> {WHATSAPP_LOCAL}</p>
-            <p className="flex items-center gap-2"><MapPin className="size-4 text-purple-400" /> المدينة — الشارع الرئيسي</p>
+            <a href={whatsappLink('مرحبًا، لدي استفسار عن المنتجات 🙌')} target="_blank" rel="noreferrer" className="flex items-center gap-2 transition hover:text-white">
+              <MessageCircle className="size-4 text-wa" /> واتساب: <span dir="ltr">{WHATSAPP_DISPLAY}</span>
+            </a>
+            <a href={`tel:${STORE_PHONE}`} className="flex items-center gap-2 transition hover:text-white">
+              <Phone className="size-4 text-accent" /> اتصال: <span dir="ltr">{STORE_PHONE}</span>
+            </a>
+            <a href={`mailto:${STORE_EMAIL}`} className="flex items-center gap-2 transition hover:text-white">
+              <Mail className="size-4 text-flame" /> <span dir="ltr">{STORE_EMAIL}</span>
+            </a>
+            <p className="flex items-center gap-2"><MapPin className="size-4 text-silver-500" /> المدينة — الشارع الرئيسي</p>
             <a
               href={whatsappLink('مرحبًا، لدي استفسار عن المنتجات 🙌')}
               target="_blank"
               rel="noreferrer"
-              className="mt-2 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-600 active:scale-95"
+              className="mt-2 inline-flex items-center gap-2 rounded-full bg-wa px-5 py-2.5 text-sm font-bold text-white transition hover:brightness-95 active:scale-95"
             >
-              <MessageCircle className="size-4" />
-              تواصل عبر واتساب
+              <MessageCircle className="size-4" /> تواصل عبر واتساب
             </a>
           </div>
         </div>

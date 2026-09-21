@@ -109,7 +109,7 @@ export default function Checkout() {
           href={done.link}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 flex items-center justify-center gap-2 rounded-full bg-emerald-500 py-3.5 text-sm font-bold text-white transition hover:bg-emerald-600 active:scale-95"
+          className="mt-6 flex items-center justify-center gap-2 rounded-full bg-wa py-3.5 text-sm font-bold text-white transition hover:brightness-95 active:scale-95"
         >
           <MessageCircle className="size-4" /> فتح واتساب مرة أخرى
         </a>
@@ -239,13 +239,13 @@ export default function Checkout() {
             )}
             <div className="flex justify-between py-2">
               <span className="font-bold text-silver-500">الإجمالي</span>
-              <span className="text-xl font-extrabold text-accent">{formatPrice(total)}</span>
+                <span className="text-xl font-extrabold text-ink">{formatPrice(total)}</span>
             </div>
           </div>
           <button
             type="submit"
             disabled={sending || loading}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-emerald-500 py-3.5 text-sm font-bold text-white shadow-soft transition hover:bg-emerald-600 active:scale-95 disabled:opacity-60"
+            className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-wa py-3.5 text-sm font-bold text-white shadow-soft transition hover:brightness-95 active:scale-95 disabled:opacity-60"
           >
             {sending ? <Loader2 className="size-4 animate-spin" /> : <MessageCircle className="size-4" />}
             إرسال الطلب عبر WhatsApp

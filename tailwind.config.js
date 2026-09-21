@@ -4,30 +4,36 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: { DEFAULT: '#111111', 800: '#1C1C1E', 700: '#2C2C2E', 600: '#3A3A3C' },
-        paper: '#F7F7F8',
+        ink: { DEFAULT: '#0F172A', 800: '#1E293B', 700: '#334155', 600: '#475569' },
+        paper: '#F6F8FB',
         silver: {
-          50: '#FAFAFB',
-          100: '#F1F1F4',
-          200: '#E5E5EA',
-          300: '#D1D1D6',
-          400: '#AEAEB2',
-          500: '#8E8E93',
+          50: '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
         },
         accent: {
-          DEFAULT: '#6C2BD9',
-          dark: '#5A21B8',
-          soft: '#F3EDFD',
-          ring: 'rgba(108,43,217,0.35)',
+          DEFAULT: '#2563EB',
+          dark: '#1D4ED8',
+          soft: '#EFF6FF',
+          ring: 'rgba(37,99,235,0.35)',
         },
+        flame: {
+          DEFAULT: '#F97316',
+          dark: '#EA580C',
+          soft: '#FFF7ED',
+        },
+        wa: '#25D366',
       },
       fontFamily: {
         sans: ['Tajawal', 'IBM Plex Sans Arabic', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
       },
       boxShadow: {
-        soft: '0 10px 30px -12px rgba(17,17,17,0.12)',
-        card: '0 4px 24px -8px rgba(17,17,17,0.08)',
-        glow: '0 8px 30px -6px rgba(108,43,217,0.45)',
+        soft: '0 10px 30px -12px rgba(15,23,42,0.14)',
+        card: '0 4px 24px -8px rgba(15,23,42,0.08)',
+        glow: '0 8px 30px -6px rgba(37,99,235,0.45)',
       },
       borderRadius: {
         '4xl': '2rem',

@@ -1,9 +1,13 @@
 export const STORE_NAME = 'Mobily Bro'
 export const STORE_NAME_AR = 'موبايلي برو'
 
+// ---- Real store contacts ----
 // WhatsApp ordering — the store's main order channel
-export const WHATSAPP_NUMBER = '963952639157' // international format for wa.me
-export const WHATSAPP_LOCAL = '0952639157' // display format
+export const WHATSAPP_NUMBER = '966558738443' // wa.me international format
+export const WHATSAPP_DISPLAY = '+966 55 873 8443' // display format
+export const STORE_PHONE = '0958628359' // call line
+export const STORE_EMAIL = 'rainman180.ayman@gmail.com'
+export const STORE_FACEBOOK = 'https://www.facebook.com/share/19cNPHEyPA/'
 
 export const CURRENCY = '$'
 export const LOW_STOCK_THRESHOLD = 3

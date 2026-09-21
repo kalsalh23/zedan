@@ -1,10 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Package, Heart, MapPin, MessageCircle, LogOut, ChevronLeft, ShieldCheck, UserCircle2, HelpCircle } from 'lucide-react'
+import { Package, Heart, MapPin, MessageCircle, LogOut, ChevronLeft, ShieldCheck, UserCircle2, HelpCircle, Phone, Mail } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useApp } from '../store/AppContext'
 import { useTitle } from '../lib/hooks'
 import { whatsappLink } from '../lib/format'
-import { WHATSAPP_LOCAL } from '../lib/constants'
+import { WHATSAPP_DISPLAY, STORE_PHONE, STORE_EMAIL } from '../lib/constants'
 import { Confirm } from '../components/UI'
 import { useState } from 'react'
 import Login from './Login'
@@ -67,12 +67,40 @@ export default function Account() {
           rel="noreferrer"
           className="flex items-center gap-4 rounded-2xl bg-white p-4 shadow-card transition hover:shadow-soft"
         >
-          <span className="flex size-11 items-center justify-center rounded-xl bg-paper text-emerald-500">
-            <HelpCircle className="size-5" />
+          <span className="flex size-11 items-center justify-center rounded-xl bg-paper text-wa">
+            <MessageCircle className="size-5" />
           </span>
           <span className="flex-1">
-            <span className="block font-extrabold text-ink">الدعم</span>
-            <span className="block text-xs text-silver-400">تواصل معنا مباشرة عبر واتساب {WHATSAPP_LOCAL}</span>
+            <span className="block font-extrabold text-ink">الدعم عبر واتساب</span>
+            <span className="block text-xs text-silver-400" dir="ltr">{WHATSAPP_DISPLAY}</span>
+          </span>
+          <ChevronLeft className="size-5 text-silver-400" />
+        </a>
+
+        <a
+          href={`tel:${STORE_PHONE}`}
+          className="flex items-center gap-4 rounded-2xl bg-white p-4 shadow-card transition hover:shadow-soft"
+        >
+          <span className="flex size-11 items-center justify-center rounded-xl bg-paper text-accent">
+            <Phone className="size-5" />
+          </span>
+          <span className="flex-1">
+            <span className="block font-extrabold text-ink">اتصال هاتفي</span>
+            <span className="block text-xs text-silver-400" dir="ltr">{STORE_PHONE}</span>
+          </span>
+          <ChevronLeft className="size-5 text-silver-400" />
+        </a>
+
+        <a
+          href={`mailto:${STORE_EMAIL}`}
+          className="flex items-center gap-4 rounded-2xl bg-white p-4 shadow-card transition hover:shadow-soft"
+        >
+          <span className="flex size-11 items-center justify-center rounded-xl bg-paper text-flame">
+            <Mail className="size-5" />
+          </span>
+          <span className="flex-1">
+            <span className="block font-extrabold text-ink">البريد الإلكتروني</span>
+            <span className="block text-xs text-silver-400" dir="ltr">{STORE_EMAIL}</span>
           </span>
           <ChevronLeft className="size-5 text-silver-400" />
         </a>

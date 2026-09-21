@@ -99,7 +99,7 @@ export default function AdminProducts() {
                   </span>
                 </div>
               </div>
-              <span className="shrink-0 text-sm font-extrabold text-accent">{formatPrice(p.price)}</span>
+              <span className="shrink-0 text-sm font-extrabold text-ink">{formatPrice(p.price)}</span>
               <div className="flex shrink-0 gap-1.5">
                 <Link to={`/admin/products/${p.id}/edit`} className="flex size-9 items-center justify-center rounded-full bg-paper text-ink transition hover:bg-accent-soft hover:text-accent active:scale-90" aria-label="تعديل">
                   <Pencil className="size-4" />

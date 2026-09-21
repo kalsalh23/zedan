@@ -1,78 +1,73 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Sparkles, ChevronLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { CATEGORY_LIST } from '../lib/constants'
-import { useTitle } from '../lib/hooks'
+import { useTitle, imgFallback } from '../lib/hooks'
 import CategoryIcon from '../components/CategoryIcon'
 import ProductCard from '../components/ProductCard'
 import { SectionTitle, SkeletonGrid } from '../components/UI'
 
-function Hero() {
+function OffersBanner({ offers }) {
+  if (!offers?.length) return null
   return (
-    <section className="relative overflow-hidden rounded-4xl bg-ink text-white">
-      <div className="pointer-events-none absolute -left-24 -top-24 size-72 rounded-full bg-accent/40 blur-[100px]" />
-      <div className="pointer-events-none absolute -bottom-32 right-1/4 size-72 rounded-full bg-accent/25 blur-[100px]" />
-      <div className="relative grid items-center gap-6 p-6 md:grid-cols-2 md:p-12">
-        <div className="animate-fade-up py-4 text-center md:text-right">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold text-purple-300">
-            <Sparkles className="size-3.5" /> جديد ومستعمل بحالة ممتازة
-          </span>
-          <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
-            أحدث الهواتف
-            <br />
-            <span className="text-purple-400">بأسعار لا تُنافس</span>
-          </h1>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-silver-300 md:mx-0 md:text-base">
-            هواتف ذكية جديدة ومستعملة مفحوصة بعناية، سماعات، شواحن وإكسسوارات أصلية — اطلب الآن واستلم من المحل أو نوصل حتى باب بيتك.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3 md:justify-start">
-            <Link
-              to="/shop"
-              className="rounded-full bg-accent px-8 py-3.5 text-sm font-bold shadow-glow transition hover:bg-accent-dark active:scale-95"
-            >
-              تسوق الآن
-            </Link>
-            <Link
-              to="/used"
-              className="rounded-full border border-white/20 bg-white/5 px-8 py-3.5 text-sm font-bold backdrop-blur transition hover:bg-white/10 active:scale-95"
-            >
-              أجهزة مستعملة ♻️
-            </Link>
+    <section className="space-y-4">
+      {offers.map((o) => (
+        <Link
+          key={o.id}
+          to="/shop"
+          className="group relative flex items-center gap-4 overflow-hidden rounded-3xl bg-ink p-6 text-white shadow-soft md:p-8"
+        >
+          <div className="pointer-events-none absolute -left-20 -top-20 size-56 rounded-full bg-flame/25 blur-[80px]" />
+          <div className="pointer-events-none absolute -bottom-24 right-1/3 size-56 rounded-full bg-accent/30 blur-[80px]" />
+          <div className="relative flex-1 min-w-0">
+            <span className="inline-block rounded-full bg-flame px-3.5 py-1.5 text-xs font-extrabold text-white shadow-card">
+              خصم {o.discount}
+            </span>
+            <h2 className="mt-3 text-xl font-extrabold md:text-2xl">{o.title}</h2>
+            {o.description && (
+              <p className="mt-1.5 line-clamp-2 max-w-lg text-xs leading-relaxed text-silver-300 md:text-sm">
+                {o.description}
+              </p>
+            )}
+            <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-accent px-6 py-2.5 text-xs font-bold shadow-glow transition group-hover:bg-accent-dark active:scale-95">
+              تسوق العرض <ArrowLeft className="size-3.5" />
+            </span>
           </div>
-        </div>
-        <div className="relative hidden justify-center md:flex">
-          <img
-            src="https://cdn.dummyjson.com/products/images/smartphones/iPhone%2015%20Pro/2.png"
-            alt="هاتف حديث"
-            className="w-80 rotate-[-6deg] rounded-3xl drop-shadow-2xl"
-            onError={(e) => (e.currentTarget.style.display = 'none')}
-          />
-        </div>
-      </div>
+          {o.image_url && (
+            <img
+              src={o.image_url}
+              alt={o.title}
+              loading="lazy"
+              className="relative hidden h-28 w-28 shrink-0 rounded-2xl object-cover shadow-soft transition duration-300 group-hover:scale-105 md:block"
+            />
+          )}
+        </Link>
+      ))}
     </section>
   )
 }
 
 function Categories({ categories }) {
-  const list = categories.length
-    ? categories
-    : CATEGORY_LIST.map((c, i) => ({ ...c, id: i }))
+  const list = categories.length ? categories : CATEGORY_LIST.map((c, i) => ({ ...c, id: i }))
   return (
     <section>
       <SectionTitle title="تسوق حسب القسم" subtitle="كل ما يحتاجه هاتفك في مكان واحد" />
       <div className="flex gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-7 lg:overflow-visible">
-        {list.map((c) => {
-          const slug = c.slug === 'used' ? 'used' : c.slug
-          return (
-            <Link key={c.slug} to={slug === 'used' ? '/used' : `/category/${c.slug}`} className="group flex w-20 shrink-0 flex-col items-center gap-2 lg:w-auto">
-              <span className="flex size-16 items-center justify-center rounded-full bg-white text-ink shadow-card transition duration-300 group-hover:-translate-y-1 group-hover:ring-2 group-hover:ring-accent/40 group-hover:shadow-soft lg:size-full lg:aspect-square">
-                <CategoryIcon icon={c.icon} className="size-7 text-accent" />
-              </span>
-              <span className="text-center text-[11px] font-bold leading-tight text-ink">{c.name}</span>
-            </Link>
-          )
-        })}
+        {list.map((c) => (
+          <Link key={c.slug} to={c.slug === 'used' ? '/used' : `/category/${c.slug}`} className="group flex w-20 shrink-0 flex-col items-center gap-2 lg:w-auto">
+            <span className="size-16 overflow-hidden rounded-full bg-white shadow-card ring-2 ring-transparent transition duration-300 group-hover:-translate-y-1 group-hover:ring-accent/40 group-hover:shadow-soft lg:size-auto lg:aspect-square lg:w-full">
+              {c.image_url ? (
+                <img src={c.image_url} alt={c.name} loading="lazy" onError={imgFallback} className="size-full object-cover transition duration-300 group-hover:scale-110" />
+              ) : (
+                <span className="flex size-full items-center justify-center">
+                  <CategoryIcon icon={c.icon} className="size-7 text-accent" />
+                </span>
+              )}
+            </span>
+            <span className="text-center text-[11px] font-bold leading-tight text-ink">{c.name}</span>
+          </Link>
+        ))}
       </div>
     </section>
   )
@@ -101,30 +96,6 @@ function ProductRow({ title, subtitle, to, products, loading, badge }) {
           ))}
         </div>
       )}
-    </section>
-  )
-}
-
-function OffersBanner({ offers }) {
-  if (!offers?.length) return null
-  return (
-    <section className="grid gap-4 md:grid-cols-2">
-      {offers.map((o) => (
-        <Link
-          key={o.id}
-          to="/shop"
-          className="group relative flex items-center gap-4 overflow-hidden rounded-3xl bg-gradient-to-l from-accent to-accent-dark p-6 text-white shadow-glow"
-        >
-          <div className="flex-1">
-            <span className="rounded-full bg-white/20 px-3 py-1 text-[11px] font-bold">عرض {o.discount}</span>
-            <h3 className="mt-2 text-xl font-extrabold">{o.title}</h3>
-            <p className="mt-1 line-clamp-2 text-xs text-white/80">{o.description}</p>
-          </div>
-          {o.image_url && (
-            <img src={o.image_url} alt={o.title} loading="lazy" className="hidden h-24 w-24 rounded-2xl object-cover transition group-hover:scale-105 sm:block" />
-          )}
-        </Link>
-      ))}
     </section>
   )
 }
@@ -159,7 +130,6 @@ export default function Home() {
 
   return (
     <div className="space-y-10">
-      <Hero />
       <OffersBanner offers={offers} />
       <Categories categories={categories} />
       <ProductRow

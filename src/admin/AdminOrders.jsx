@@ -99,7 +99,7 @@ export default function AdminOrders() {
                         ))}
                       </select>
                     )}
-                    <span className="text-lg font-extrabold text-accent">{formatPrice(o.total)}</span>
+                    <span className="text-lg font-extrabold text-ink">{formatPrice(o.total)}</span>
                   </div>
                 </div>
 

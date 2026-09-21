@@ -7,7 +7,7 @@ import { formatPrice } from '../lib/format'
 import { EmptyState, Spinner } from '../components/UI'
 
 const ROWS = [
-  { key: 'price', label: 'السعر', render: (p) => <span className="font-extrabold text-accent">{formatPrice(p.price)}</span> },
+  { key: 'price', label: 'السعر', render: (p) => <span className="font-extrabold text-ink">{formatPrice(p.price)}</span> },
   { key: 'condition', label: 'الحالة', render: (p) => (p.condition === 'used' ? '♻️ مستعمل' : '✨ جديد') },
   { key: 'screen', label: 'الشاشة', get: (p) => p.specs?.screen },
   { key: 'processor', label: 'المعالج', get: (p) => p.specs?.processor },

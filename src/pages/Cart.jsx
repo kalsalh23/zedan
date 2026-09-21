@@ -63,7 +63,7 @@ export default function Cart() {
                   </button>
                 </div>
               </div>
-              <span className="shrink-0 text-sm font-extrabold text-accent">{formatPrice(Number(p.price) * qty)}</span>
+              <span className="shrink-0 text-sm font-extrabold text-ink">{formatPrice(Number(p.price) * qty)}</span>
             </div>
           ))}
         </div>
@@ -76,7 +76,7 @@ export default function Cart() {
           </div>
           <div className="flex justify-between py-3 text-base">
             <span className="font-bold text-silver-500">الإجمالي</span>
-            <span className="text-xl font-extrabold text-accent">{formatPrice(total)}</span>
+            <span className="text-xl font-extrabold text-ink">{formatPrice(total)}</span>
           </div>
           <p className="mb-4 rounded-xl bg-paper p-3 text-[11px] leading-relaxed text-silver-500">
             💡 لا يوجد دفع إلكتروني — سيتم إرسال طلبك عبر واتساب وتأكيده مع البائع مباشرة.

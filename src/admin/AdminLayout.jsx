@@ -13,8 +13,7 @@ const links = [
   { to: '/admin/offers', label: 'العروض', icon: Percent },
 ]
 
-export default function AdminLayout() {
-  useTitle('لوحة التحكم')
+function Guard({ children }) {
   const { user, authReady, isAdmin } = useApp()
   const navigate = useNavigate()
   const [checking, setChecking] = useState(true)
@@ -33,7 +32,7 @@ export default function AdminLayout() {
 
   if (!user)
     return (
-      <div className="mx-auto flex max-w-md flex-col items-center rounded-4xl bg-white p-10 text-center shadow-soft">
+      <div className="mx-auto flex max-w-md flex-col items-center rounded-4xl bg-white p-8 text-center shadow-soft md:p-10">
         <ShieldAlert className="size-12 text-accent" />
         <h1 className="mt-4 text-xl font-extrabold text-ink">منطقة محمية</h1>
         <p className="mt-2 text-sm text-silver-500">سجّل دخولك بحساب المدير للوصول إلى لوحة التحكم.</p>
@@ -48,7 +47,7 @@ export default function AdminLayout() {
 
   if (!isAdmin)
     return (
-      <div className="mx-auto flex max-w-md flex-col items-center rounded-4xl bg-white p-10 text-center shadow-soft">
+      <div className="mx-auto flex max-w-md flex-col items-center rounded-4xl bg-white p-8 text-center shadow-soft md:p-10">
         <ShieldAlert className="size-12 text-red-400" />
         <h1 className="mt-4 text-xl font-extrabold text-ink">غير مصرح</h1>
         <p className="mt-2 text-sm leading-relaxed text-silver-500">
@@ -60,40 +59,75 @@ export default function AdminLayout() {
       </div>
     )
 
-  return (
-    <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
-      <aside className="lg:sticky lg:top-24 lg:h-fit">
-        <div className="rounded-3xl bg-ink p-4 text-white shadow-soft">
-          <p className="mb-3 hidden px-2 text-xs font-bold text-silver-400 lg:block">لوحة الإدارة</p>
-          <nav className="flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible">
-            {links.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                end={l.end}
-                className={({ isActive }) =>
-                  `flex shrink-0 items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-bold transition ${
-                    isActive ? 'bg-accent text-white shadow-glow' : 'text-silver-300 hover:bg-white/10 hover:text-white'
-                  }`
-                }
-              >
-                <l.icon className="size-4.5" />
-                {l.label}
-              </NavLink>
-            ))}
-            <NavLink
-              to="/"
-              className="flex shrink-0 items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-bold text-silver-300 transition hover:bg-white/10 hover:text-white"
-            >
-              <Store className="size-4.5" /> عرض المتجر
-            </NavLink>
-          </nav>
-        </div>
-      </aside>
+  return children
+}
 
-      <div className="min-w-0">
-        <Outlet />
+export default function AdminLayout() {
+  useTitle('لوحة التحكم')
+  return (
+    <Guard>
+      {/* Mobile: sticky tabs bar */}
+      <div className="sticky top-16 z-40 -mx-4 border-b border-silver-100 bg-paper/95 px-4 py-2.5 backdrop-blur md:top-16 lg:hidden">
+        <nav className="flex gap-2 overflow-x-auto">
+          {links.map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.end}
+              className={({ isActive }) =>
+                `flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition ${
+                  isActive ? 'bg-accent text-white shadow-glow' : 'bg-white text-ink shadow-card'
+                }`
+              }
+            >
+              <l.icon className="size-3.5" />
+              {l.label}
+            </NavLink>
+          ))}
+          <NavLink
+            to="/"
+            className="flex shrink-0 items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-accent shadow-card"
+          >
+            <Store className="size-3.5" /> المتجر
+          </NavLink>
+        </nav>
       </div>
-    </div>
+
+      <div className="grid gap-6 lg:grid-cols-[240px_1fr]">
+        {/* Desktop sidebar */}
+        <aside className="hidden lg:sticky lg:top-24 lg:block lg:h-fit">
+          <div className="rounded-3xl bg-ink p-4 text-white shadow-soft">
+            <p className="mb-3 px-2 text-xs font-bold text-silver-400">لوحة الإدارة</p>
+            <nav className="flex flex-col gap-1">
+              {links.map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  end={l.end}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-bold transition ${
+                      isActive ? 'bg-accent text-white shadow-glow' : 'text-silver-300 hover:bg-white/10 hover:text-white'
+                    }`
+                  }
+                >
+                  <l.icon className="size-4.5" />
+                  {l.label}
+                </NavLink>
+              ))}
+              <NavLink
+                to="/"
+                className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-bold text-silver-300 transition hover:bg-white/10 hover:text-white"
+              >
+                <Store className="size-4.5" /> عرض المتجر
+              </NavLink>
+            </nav>
+          </div>
+        </aside>
+
+        <div className="min-w-0">
+          <Outlet />
+        </div>
+      </div>
+    </Guard>
   )
 }

@@ -60,7 +60,7 @@ export function SearchResults({ q, onDone }) {
             <div className="truncate text-sm font-bold text-ink">{p.name}</div>
             <div className="text-xs text-silver-500">{p.brand}</div>
           </div>
-          <span className="shrink-0 text-sm font-extrabold text-accent">{formatPrice(p.price)}</span>
+          <span className="shrink-0 text-sm font-extrabold text-ink">{formatPrice(p.price)}</span>
         </Link>
       ))}
       <Link to={`/search?q=${encodeURIComponent(dq)}`} onClick={onDone} className="block bg-paper px-4 py-2.5 text-center text-sm font-bold text-accent">

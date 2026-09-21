@@ -33,6 +33,7 @@ export default function AdminCategories() {
       name: editing.name.trim(),
       slug: editing.slug?.trim() || editing.name.trim().toLowerCase().replace(/\s+/g, '-'),
       icon: editing.icon || 'box',
+      image_url: editing.image_url?.trim() || null,
       sort_order: Number(editing.sort_order || 0),
     }
     const q = editing.id
@@ -85,6 +86,10 @@ export default function AdminCategories() {
               {ICONS.map((i) => <option key={i} value={i}>{i}</option>)}
             </select>
           </label>
+          <label className="block sm:col-span-2">
+            <span className="mb-1.5 block text-xs font-bold text-silver-500">صورة القسم (رابط صورة واقعية)</span>
+            <input className={inputCls} dir="ltr" value={editing.image_url || ''} onChange={(e) => setEditing({ ...editing, image_url: e.target.value })} placeholder="https://...jpg" />
+          </label>
           <label className="block">
             <span className="mb-1.5 block text-xs font-bold text-silver-500">الترتيب</span>
             <input type="number" className={inputCls} value={editing.sort_order ?? ''} onChange={(e) => setEditing({ ...editing, sort_order: e.target.value })} />
@@ -101,9 +106,13 @@ export default function AdminCategories() {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((c) => (
           <div key={c.id} className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-card">
-            <span className="flex size-12 items-center justify-center rounded-full bg-paper text-accent">
-              <CategoryIcon icon={c.icon} className="size-6" />
-            </span>
+            {c.image_url ? (
+              <img src={c.image_url} alt={c.name} className="size-12 shrink-0 rounded-full object-cover" />
+            ) : (
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-paper text-accent">
+                <CategoryIcon icon={c.icon} className="size-6" />
+              </span>
+            )}
             <div className="min-w-0 flex-1">
               <p className="text-sm font-extrabold text-ink">{c.name}</p>
               <p className="text-xs text-silver-400" dir="ltr">{c.slug}</p>

@@ -139,7 +139,7 @@ export default function Product() {
           <p className="mt-1 text-sm font-bold text-silver-400">{p.brand}</p>
 
           <div className="mt-4 flex items-baseline gap-3">
-            <span className="text-3xl font-extrabold text-accent">{formatPrice(p.price)}</span>
+            <span className="text-3xl font-extrabold text-ink">{formatPrice(p.price)}</span>
             {p.old_price && Number(p.old_price) > 0 && (
               <span className="text-lg font-bold text-silver-300 line-through">{formatPrice(p.old_price)}</span>
             )}

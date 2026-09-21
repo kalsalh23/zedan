@@ -42,7 +42,7 @@ export default function Favorites() {
                 <Link to={`/product/${p.id}`} className="line-clamp-1 text-sm font-extrabold text-ink hover:text-accent">
                   {p.name}
                 </Link>
-                <p className="mt-1 font-extrabold text-accent">{formatPrice(p.price)}</p>
+                <p className="mt-1 font-extrabold text-ink">{formatPrice(p.price)}</p>
               </div>
               <div className="flex shrink-0 flex-col gap-2">
                 <button
