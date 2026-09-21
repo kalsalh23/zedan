@@ -9,6 +9,9 @@ export const STORE_PHONE = '0958628359' // call line
 export const STORE_EMAIL = 'rainman180.ayman@gmail.com'
 export const STORE_FACEBOOK = 'https://www.facebook.com/share/19cNPHEyPA/'
 
+// Web Push (external notifications) — public VAPID key
+export const VAPID_PUBLIC_KEY = 'BPAFVHMrjNKi57FVXxM8VkuvetSoXcghK60DNkpi9F7I_LXjvn1ORUDl_kCxPzZneaRffu4tS4ozEU5NdNWIIjE'
+
 export const CURRENCY = '$'
 export const LOW_STOCK_THRESHOLD = 3
 export const COMPARE_MAX = 3

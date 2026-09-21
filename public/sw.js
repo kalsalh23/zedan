@@ -1,5 +1,5 @@
 // Mobily Bro service worker — installability + light offline shell
-const CACHE = 'mobily-bro-v2'
+const CACHE = 'mobily-bro-v3'
 const CORE = [
   '/',
   '/index.html',
@@ -72,4 +72,37 @@ self.addEventListener('fetch', (e) => {
     )
   }
   // Supabase API and everything else: network only → always fresh data
+})
+
+// ---- external Web Push (arrives even when the app is closed) ----
+self.addEventListener('push', (e) => {
+  let data = {}
+  try {
+    data = e.data.json()
+  } catch {
+    data = { title: 'Mobily Bro', body: 'يوجد جديد في المتجر' }
+  }
+  e.waitUntil(
+    self.registration.showNotification(data.title || 'Mobily Bro', {
+      body: data.body || '',
+      icon: data.icon || '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      dir: 'rtl',
+      lang: 'ar',
+      data: { url: data.url || '/' },
+    })
+  )
+})
+
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close()
+  const url = (e.notification.data && e.notification.data.url) || '/'
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+      for (const client of list) {
+        if (client.url.includes(url)) return client.focus()
+      }
+      return self.clients.openWindow(url)
+    })
+  )
 })

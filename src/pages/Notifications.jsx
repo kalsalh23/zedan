@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Bell, BellRing, Smartphone, Percent, CheckCheck, Info } from 'lucide-react'
 import { useApp } from '../store/AppContext'
 import { useTitle, imgFallback } from '../lib/hooks'
 import { timeAgo } from '../lib/format'
+import { enablePushNotifications } from '../lib/push'
 import { EmptyState } from '../components/UI'
 
 const TYPE_META = {
@@ -14,17 +15,27 @@ const TYPE_META = {
 
 export default function Notifications() {
   useTitle('الإشعارات')
-  const { notifications, unreadCount, markNotificationsSeen } = useApp()
+  const { notifications, unreadCount, markNotificationsSeen, toast } = useApp()
   const [perm, setPerm] = useState(typeof Notification !== 'undefined' ? Notification.permission : 'unsupported')
+  const [pushBusy, setPushBusy] = useState(false)
+
+  // silently re-subscribe already-granted devices (keeps subscription alive)
+  useEffect(() => {
+    if (perm === 'granted') enablePushNotifications().catch(() => {})
+  }, [perm])
 
   const enableDeviceNotifications = async () => {
     if (typeof Notification === 'undefined') return
+    setPushBusy(true)
     try {
-      const p = await Notification.requestPermission()
+      const p = await enablePushNotifications()
       setPerm(p)
+      if (p === 'granted') toast('تم التفعيل — ستصلك الإشعارات حتى والتطبيق مغلق 🔔')
+      else if (p === 'denied') toast('رُفض الإذن — فعّله من إعدادات المتصفح', 'error')
     } catch {
-      /* ignore */
+      toast('تعذر تفعيل الإشعارات الخارجية على هذا الجهاز', 'error')
     }
+    setPushBusy(false)
   }
 
   return (
@@ -47,20 +58,21 @@ export default function Notifications() {
       {perm === 'default' && (
         <button
           onClick={enableDeviceNotifications}
-          className="mb-4 flex w-full items-center gap-3 rounded-2xl bg-ink p-4 text-right text-white shadow-soft transition hover:bg-ink-800"
+          disabled={pushBusy}
+          className="mb-4 flex w-full items-center gap-3 rounded-2xl bg-ink p-4 text-right text-white shadow-soft transition hover:bg-ink-800 disabled:opacity-60"
         >
           <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-white text-ink">
             <BellRing className="size-5" />
           </span>
           <span className="flex-1">
-            <span className="block text-sm font-extrabold">فعّل إشعارات الجهاز</span>
-            <span className="block text-xs text-silver-300">ليصلك تنبيه فوري عند إضافة أجهزة جديدة أو عروض وخصومات</span>
+            <span className="block text-sm font-extrabold">فعّل الإشعارات الخارجية</span>
+            <span className="block text-xs text-silver-300">تصلك تنبيهات الجهاز حتى والتطبيق مغلق — أجهزة جديدة، عروض وخصومات</span>
           </span>
         </button>
       )}
       {perm === 'granted' && (
         <p className="mb-4 flex items-center gap-2 rounded-2xl bg-white p-3.5 text-xs font-bold text-silver-500 shadow-card">
-          <BellRing className="size-4 text-emerald-500" /> إشعارات الجهاز مفعّلة — ستصلك التنبيهات الفورية
+          <BellRing className="size-4 text-emerald-500" /> الإشعارات الخارجية مفعّلة على هذا الجهاز — ستوصلك حتى والتطبيق مغلق
         </p>
       )}
       {perm === 'denied' && (
