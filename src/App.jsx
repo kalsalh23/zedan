@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import BottomNav from './components/BottomNav'
+import InstallDialog from './components/InstallDialog'
 import { Toasts, Spinner } from './components/UI'
 
 // retry failed chunk loads once (fixes stuck pages after deploys or flaky networks)
@@ -113,6 +114,7 @@ export default function App() {
       </main>
       <Footer />
       <BottomNav />
+      <InstallDialog />
       <Toasts />
     </div>
   )

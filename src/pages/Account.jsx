@@ -3,6 +3,7 @@ import { Package, Heart, MapPin, MessageCircle, LogOut, ChevronLeft, ShieldCheck
 import { supabase } from '../lib/supabase'
 import { useApp } from '../store/AppContext'
 import { useTitle } from '../lib/hooks'
+import { getInstallPrompt, requestInstall, canInstall } from '../lib/install'
 import { whatsappLink } from '../lib/format'
 import { WHATSAPP_DISPLAY, STORE_PHONE, STORE_EMAIL } from '../lib/constants'
 import { Confirm } from '../components/UI'
@@ -11,18 +12,19 @@ import Login from './Login'
 
 export default function Account() {
   useTitle('حسابي')
-  const { user, isAdmin, profile } = useApp()
+  const { user, isAdmin, profile, toast } = useApp()
   const [confirmOut, setConfirmOut] = useState(false)
-  const [installEvt, setInstallEvt] = useState(null)
+  const [installReady, setInstallReady] = useState(canInstall())
   const navigate = useNavigate()
 
   useEffect(() => {
-    const onPrompt = (e) => {
-      e.preventDefault()
-      setInstallEvt(e)
+    // re-check shortly after mount (prompt may arrive late)
+    const t1 = setTimeout(() => setInstallReady(canInstall()), 1500)
+    const t2 = setTimeout(() => setInstallReady(canInstall()), 4000)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
     }
-    window.addEventListener('beforeinstallprompt', onPrompt)
-    return () => window.removeEventListener('beforeinstallprompt', onPrompt)
   }, [])
 
   if (!user) return <Login />
@@ -71,16 +73,20 @@ export default function Account() {
           </Link>
         ))}
 
-        {installEvt && (
+        {installReady && (
           <button
-            onClick={() => installEvt.prompt()}
+            onClick={async () => {
+              const res = await requestInstall()
+              if (res === 'accepted') toast('تم التثبيت — تجد Mobily Bro على شاشتك الرئيسية 📱')
+              else if (res === 'unavailable') toast('استخدم قائمة المتصفح «إضافة إلى الشاشة الرئيسية»', 'error')
+            }}
             className="flex w-full items-center gap-4 rounded-2xl bg-accent-soft p-4 text-right shadow-card transition hover:shadow-soft"
           >
-            <span className="flex size-11 items-center justify-center rounded-xl bg-accent text-white">
+            <span className="flex size-11 items-center justify-center rounded-xl bg-ink text-white">
               <Download className="size-5" />
             </span>
             <span className="flex-1">
-              <span className="block font-extrabold text-accent">ثبّت Mobily Bro كتطبيق على جهازك</span>
+              <span className="block font-extrabold text-ink">ثبّت Mobily Bro كتطبيق على جهازك</span>
               <span className="block text-xs text-silver-500">أيقونة على الشاشة الرئيسية وفتح أسرع كالتطبيقات</span>
             </span>
             <ChevronLeft className="size-5 text-silver-400" />

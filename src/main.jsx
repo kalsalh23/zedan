@@ -4,8 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { AppProvider } from './store/AppContext'
 import './index.css'
+import { captureInstallPrompt } from './lib/install'
 
 // PWA: installable app icon + offline shell
+captureInstallPrompt()
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(() => {})
