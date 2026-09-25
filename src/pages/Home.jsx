@@ -11,35 +11,36 @@ import { SectionTitle, SkeletonGrid } from '../components/UI'
 
 function Slide({ offer: o }) {
   return (
-    <div className="relative flex w-full shrink-0 items-center gap-4 overflow-hidden rounded-4xl bg-ink p-5 text-white sm:gap-5 md:p-8">
-      <div className="pointer-events-none absolute -left-20 -top-20 size-56 rounded-full bg-flame/25 blur-[80px]" />
-      <div className="pointer-events-none absolute -bottom-24 right-1/3 size-56 rounded-full bg-white/10 blur-[80px]" />
-      <div className="relative min-w-0 flex-1">
+    <div className="relative flex w-full shrink-0 items-stretch gap-0 overflow-hidden rounded-4xl border border-silver-200 bg-white text-ink">
+      <div className="flex min-w-0 flex-1 flex-col justify-center gap-2 p-5 md:p-8">
         {o.discount && (
-          <span className="inline-block rounded-full bg-flame px-3.5 py-1.5 text-xs font-extrabold text-white shadow-card">
+          <span className="w-fit rounded-md bg-flame px-2.5 py-1 text-[11px] font-extrabold tracking-wide text-white">
             خصم {o.discount}
           </span>
         )}
-        <h2 className="mt-3 text-xl font-extrabold md:text-2xl">{o.title}</h2>
+        <h2 className="text-xl font-extrabold leading-snug tracking-tight md:text-3xl">{o.title}</h2>
+        <span className="h-0.5 w-10 rounded-full bg-ink/80" />
         {o.description && (
-          <p className="mt-1.5 line-clamp-2 max-w-lg text-xs leading-relaxed text-silver-300 md:text-sm">
+          <p className="line-clamp-2 max-w-md text-xs font-medium leading-relaxed text-silver-500 md:text-sm">
             {o.description}
           </p>
         )}
         <Link
           to="/shop"
-          className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-xs font-extrabold text-ink transition hover:bg-silver-100 active:scale-95"
+          className="mt-1 flex w-fit items-center gap-1.5 rounded-full bg-ink px-6 py-2.5 text-xs font-extrabold text-white transition hover:bg-ink-800 active:scale-95"
         >
           تسوق العرض <ArrowLeft className="size-3.5" />
         </Link>
       </div>
       {o.image_url && (
-        <img
-          src={o.image_url}
-          alt={o.title}
-          loading="lazy"
-          className="relative h-24 w-24 shrink-0 rounded-2xl object-cover shadow-soft transition duration-300 hover:scale-105 sm:h-28 sm:w-28 md:h-36 md:w-36"
-        />
+        <div className="relative hidden w-44 shrink-0 items-center justify-center border-r border-silver-100 bg-paper p-4 sm:flex md:w-60">
+          <img
+            src={o.image_url}
+            alt={o.title}
+            loading="lazy"
+            className="max-h-36 w-auto max-w-full rounded-xl object-contain md:max-h-44"
+          />
+        </div>
       )}
     </div>
   )
@@ -101,7 +102,7 @@ function OffersCarousel({ offers }) {
               key={i}
               onClick={() => setIdx(i)}
               aria-label={`العرض ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all duration-300 ${i === idx ? 'w-6 bg-ink' : 'w-1.5 bg-silver-300 hover:bg-silver-400'}`}
+              className={`h-1 rounded-full transition-all duration-300 ${i === idx ? 'w-7 bg-ink' : 'w-2.5 bg-silver-300 hover:bg-silver-400'}`}
             />
           ))}
         </div>
@@ -117,13 +118,13 @@ function Categories({ categories }) {
       <SectionTitle title="تسوق حسب القسم" subtitle="كل ما يحتاجه هاتفك في مكان واحد" />
       <div className="flex gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-8 lg:overflow-visible">
         {list.map((c) => (
-          <Link key={c.slug} to={c.slug === 'used' ? '/used' : `/category/${c.slug}`} className="group flex w-20 shrink-0 flex-col items-center gap-2 lg:w-auto">
-            <span className="size-16 overflow-hidden rounded-full bg-white shadow-card ring-2 ring-transparent transition duration-300 group-hover:-translate-y-1 group-hover:ring-accent/40 group-hover:shadow-soft lg:size-auto lg:aspect-square lg:w-full">
+          <Link key={c.slug} to={c.slug === 'used' ? '/used' : `/category/${c.slug}`} className="group flex w-[4.5rem] shrink-0 flex-col items-center gap-2 sm:w-20 lg:w-auto">
+            <span className="block aspect-square w-16 overflow-hidden rounded-full bg-white shadow-card ring-2 ring-transparent transition duration-300 group-hover:-translate-y-1 group-hover:ring-ink/20 group-hover:shadow-soft sm:w-20 lg:w-full">
               {c.image_url ? (
                 <img src={c.image_url} alt={c.name} loading="lazy" onError={imgFallback} className="size-full object-cover transition duration-300 group-hover:scale-110" />
               ) : (
                 <span className="flex size-full items-center justify-center">
-                  <CategoryIcon icon={c.icon} className="size-7 text-accent" />
+                  <CategoryIcon icon={c.icon} className="size-7 text-ink" />
                 </span>
               )}
             </span>

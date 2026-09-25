@@ -11,7 +11,7 @@ export default function Topup() {
   const [q, setQ] = useState('')
 
   const items = useMemo(() => {
-    let list = TOPUP_CATEGORIES.flatMap((c) => TOPUP_ITEMS[c.slug].map(([name, emoji]) => ({ name, emoji, cat: c.slug })))
+    let list = TOPUP_CATEGORIES.flatMap((c) => TOPUP_ITEMS[c.slug].map(([name, emoji, price]) => ({ name, emoji, price, cat: c.slug })))
     if (cat !== 'all') list = list.filter((i) => i.cat === cat)
     if (q.trim()) {
       const t = q.trim().toLowerCase()
@@ -32,7 +32,7 @@ export default function Topup() {
           </span>
           <h1 className="mt-4 text-2xl font-extrabold md:text-4xl">شحن تطبيقات وألعاب ⚡</h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-silver-300 md:text-base">
-            نوفر شحن أكثر من {TOPUP_COUNT} لعبة وتطبيق: شدات، جواهر، عملات، بطاقات هدايا واشتراكات مميزة — تسليم سريع بعد تأكيد الدفع.
+            نوفر شحن أكثر من {TOPUP_COUNT} لعبة وتطبيق وباقة واشتراك: شدات، جواهر، عملات، بطاقات هدايا، اشتراكات مميزة ومفاتيح — تسليم سريع بعد تأكيد الدفع.
           </p>
           <div className="mt-6 grid grid-cols-1 gap-2.5 text-xs font-bold sm:grid-cols-3">
             {[
@@ -106,23 +106,30 @@ export default function Topup() {
       ) : (
         <section className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {items.map((i) => (
-            <div key={i.name} className="flex flex-col rounded-2xl bg-white p-3.5 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft">
+            <div key={i.name} className="flex flex-col rounded-2xl bg-white p-3 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-soft">
               <div className="flex items-center gap-2.5">
                 <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-paper text-xl">{i.emoji}</span>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-bold text-silver-400">{CAT_NAME[i.cat]}</p>
                   <h3 className="line-clamp-2 text-[13px] font-extrabold leading-snug text-ink">{i.name}</h3>
                 </div>
               </div>
-              <a
-                href={topupOrderLink(i.name)}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-3 flex items-center justify-center gap-1.5 rounded-full bg-wa py-2 text-[11px] font-bold text-white transition hover:brightness-95 active:scale-95"
-              >
-                <MessageCircle className="size-3.5" />
-                اطلب عبر واتساب
-              </a>
+              <div className="mt-2 flex items-center justify-between gap-2">
+                {i.price ? (
+                  <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-extrabold text-white">{i.price}$</span>
+                ) : (
+                  <span className="text-[10px] font-bold text-silver-400">حسب الكمية</span>
+                )}
+                <a
+                  href={topupOrderLink(i.name, i.price)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-wa py-2 text-[11px] font-bold text-white transition hover:brightness-95 active:scale-95"
+                >
+                  <MessageCircle className="size-3.5" />
+                  اطلب
+                </a>
+              </div>
             </div>
           ))}
         </section>
