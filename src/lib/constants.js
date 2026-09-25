@@ -1,5 +1,7 @@
 export const STORE_NAME = 'Mobily Bro'
 export const STORE_NAME_AR = 'موبايلي برو'
+// displayed in the footer so you can always verify which version is live
+export const APP_VERSION = '1.5.0'
 
 // ---- Real store contacts ----
 // WhatsApp ordering — the store's main order channel

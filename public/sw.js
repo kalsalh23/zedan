@@ -1,5 +1,5 @@
 // Mobily Bro service worker — installability + light offline shell
-const CACHE = 'mobily-bro-v4'
+const CACHE = 'mobily-bro-v5'
 const CORE = [
   '/',
   '/index.html',

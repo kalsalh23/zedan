@@ -6,11 +6,34 @@ import { AppProvider } from './store/AppContext'
 import './index.css'
 import { captureInstallPrompt } from './lib/install'
 
-// PWA: installable app icon + offline shell
+// PWA: installable app icon + offline shell + self-updating
 captureInstallPrompt()
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {})
+    // when a NEW service worker takes control (an update), reload once —
+    // this makes every deployment appear without any manual step
+    let refreshing = false
+    const hadController = !!navigator.serviceWorker.controller
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing || !hadController) return
+      refreshing = true
+      window.location.reload()
+    })
+
+    navigator.serviceWorker
+      .register('/sw.js', { updateViaCache: 'none' })
+      .then((reg) => {
+        const check = () => {
+          if (document.visibilityState === 'visible') reg.update().catch(() => {})
+        }
+        // installed apps resume from memory without a navigation —
+        // check for updates every time the app becomes visible/focused
+        document.addEventListener('visibilitychange', check)
+        window.addEventListener('focus', check)
+        setInterval(check, 30 * 60 * 1000)
+        check()
+      })
+      .catch(() => {})
   })
 }
 

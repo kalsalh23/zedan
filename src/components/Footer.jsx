@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Plus, MessageCircle, MapPin, Phone, Mail, Facebook } from 'lucide-react'
 import { CATEGORY_LIST, WHATSAPP_DISPLAY, STORE_PHONE, STORE_EMAIL, STORE_FACEBOOK } from '../lib/constants'
+import { APP_VERSION } from '../lib/constants'
 import { whatsappLink } from '../lib/format'
 
 export default function Footer() {
@@ -69,7 +70,7 @@ export default function Footer() {
 
       <div className="border-t border-white/10 py-5">
         <p className="text-center text-xs text-silver-500">
-          © {new Date().getFullYear()} Mobily Bro — جميع الحقوق محفوظة
+          © {new Date().getFullYear()} Mobily Bro — جميع الحقوق محفوظة · الإصدار {APP_VERSION}
         </p>
       </div>
     </footer>
