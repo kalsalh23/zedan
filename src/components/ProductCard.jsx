@@ -3,6 +3,7 @@ import { Heart, ShoppingCart, GitCompare, BatteryFull, Recycle, Signal } from 'l
 import { useApp } from '../store/AppContext'
 import { formatPrice, isAvailable } from '../lib/format'
 import { imgFallback } from '../lib/hooks'
+import BrandBand from './BrandBand'
 
 const img = (p) => p.main_image || (p.product_images?.[0]?.url ?? '')
 
@@ -52,6 +53,7 @@ export default function ProductCard({ product }) {
             غير متوفر
           </div>
         )}
+        <BrandBand />
       </Link>
 
       <Link to={`/product/${p.id}`} className="mt-2 px-0.5">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { X, ChevronRight, ChevronLeft, ZoomIn } from 'lucide-react'
 import { imgFallback } from '../lib/hooks'
+import BrandBand from './BrandBand'
 
 export default function Gallery({ images = [], name }) {
   const urls = images.length ? images : ['']
@@ -36,7 +37,8 @@ export default function Gallery({ images = [], name }) {
             onError={imgFallback}
             className="aspect-square w-full object-contain p-6 transition duration-300 group-hover:scale-[1.03] md:aspect-[4/3]"
           />
-          <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-ink shadow-card backdrop-blur">
+          <BrandBand variant="large" />
+          <span className="absolute bottom-14 left-3 z-10 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-ink shadow-card backdrop-blur">
             <ZoomIn className="size-3.5" /> تكبير الصورة
           </span>
         </button>

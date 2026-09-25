@@ -45,28 +45,28 @@ export default function About() {
   return (
     <div className="mx-auto max-w-3xl animate-fade-up space-y-6">
       {/* شرح المتجر */}
-      <section className="relative overflow-hidden rounded-4xl bg-ink p-8 text-white shadow-soft md:p-10">
+      <section className="relative overflow-hidden rounded-4xl bg-ink p-6 text-white shadow-soft md:p-10">
         <div className="pointer-events-none absolute -left-20 -top-20 size-56 rounded-full bg-white/10 blur-[80px]" />
         <div className="pointer-events-none absolute -bottom-24 right-1/4 size-56 rounded-full bg-flame/20 blur-[80px]" />
         <div className="relative">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold text-silver-300">
-            <Sparkles className="size-3.5" /> من نحن
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1 text-[11px] font-bold text-silver-300">
+            <Sparkles className="size-3" /> من نحن
           </span>
-          <h1 className="mt-4 text-2xl font-extrabold md:text-3xl">
+          <h1 className="mt-3 text-xl font-extrabold md:text-3xl">
             Mobily Bro — <span className="text-silver-300">موبايلي برو</span>
           </h1>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-silver-300 md:text-base">
-            متجر متخصص بعالم الهواتف الذكية والإكسسوارات. نوفر أحدث الهواتف الجديدة بضمان المتجر، وأجهزة مستعملة مفحوصة بعناية وحالة موثّقة بالتفصيل — مع إكسسوارات أصلية من سماعات وشواحن وكفرات وساعات ذكية.
+          <p className="mt-2 max-w-xl text-xs leading-relaxed text-silver-300 md:text-base">
+            متجر متخصص بعالم الهواتف الذكية والإكسسوارات. نوفر أحدث الهواتف الجديدة بضمان المتجر، وأجهزة مستعملة مفحوصة بعناية وحالة موثّقة بالتفصيل — مع إكسسوارات أصلية وشحن تطبيقات وألعاب.
           </p>
-          <div className="mt-6 grid grid-cols-2 gap-2.5 text-xs font-bold md:grid-cols-4">
+          <div className="mt-4 grid grid-cols-2 gap-2 text-[10px] font-bold md:grid-cols-4 md:text-xs">
             {[
               { icon: BadgeCheck, label: 'أجهزة أصلية مفحوصة' },
               { icon: Recycle, label: 'مستعمل بحالة موثّقة' },
               { icon: Truck, label: 'توصيل أو استلام من المحل' },
               { icon: ShieldCheck, label: 'طلب سريع عبر واتساب' },
             ].map((f) => (
-              <span key={f.label} className="flex items-center gap-2 rounded-2xl bg-white/10 px-3.5 py-3">
-                <f.icon className="size-4 shrink-0 text-white" />
+              <span key={f.label} className="flex items-center gap-1.5 rounded-xl bg-white/10 px-3 py-2.5">
+                <f.icon className="size-3.5 shrink-0 text-white" />
                 {f.label}
               </span>
             ))}

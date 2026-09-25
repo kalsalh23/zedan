@@ -7,38 +7,39 @@ import { useTitle, imgFallback } from '../lib/hooks'
 import { useApp } from '../store/AppContext'
 import CategoryIcon from '../components/CategoryIcon'
 import ProductCard from '../components/ProductCard'
+import BrandBand from '../components/BrandBand'
 import { SectionTitle, SkeletonGrid } from '../components/UI'
 
 function Slide({ offer: o }) {
   return (
-    <div className="relative flex w-full shrink-0 items-stretch gap-0 overflow-hidden rounded-4xl border border-silver-200 bg-white text-ink">
-      <div className="flex min-w-0 flex-1 flex-col justify-center gap-2 p-5 md:p-8">
+    <div className="relative flex w-full shrink-0 items-stretch gap-0 overflow-hidden rounded-3xl border border-silver-200 bg-white text-ink">
+      <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 md:p-6">
         {o.discount && (
-          <span className="w-fit rounded-md bg-flame px-2.5 py-1 text-[11px] font-extrabold tracking-wide text-white">
+          <span className="w-fit rounded-md bg-flame px-2.5 py-0.5 text-[11px] font-extrabold tracking-wide text-white">
             خصم {o.discount}
           </span>
         )}
-        <h2 className="text-xl font-extrabold leading-snug tracking-tight md:text-3xl">{o.title}</h2>
+        <h2 className="text-lg font-extrabold leading-snug tracking-tight md:text-2xl">{o.title}</h2>
         <span className="h-0.5 w-10 rounded-full bg-ink/80" />
         {o.description && (
-          <p className="line-clamp-2 max-w-md text-xs font-medium leading-relaxed text-silver-500 md:text-sm">
+          <p className="line-clamp-2 max-w-md text-[11px] font-medium leading-relaxed text-silver-500 md:text-sm">
             {o.description}
           </p>
         )}
         <Link
           to="/shop"
-          className="mt-1 flex w-fit items-center gap-1.5 rounded-full bg-ink px-6 py-2.5 text-xs font-extrabold text-white transition hover:bg-ink-800 active:scale-95"
+          className="mt-0.5 flex w-fit items-center gap-1.5 rounded-full bg-ink px-5 py-2 text-xs font-extrabold text-white transition hover:bg-ink-800 active:scale-95"
         >
           تسوق العرض <ArrowLeft className="size-3.5" />
         </Link>
       </div>
       {o.image_url && (
-        <div className="relative hidden w-44 shrink-0 items-center justify-center border-r border-silver-100 bg-paper p-4 sm:flex md:w-60">
+        <div className="relative hidden w-36 shrink-0 items-center justify-center border-r border-silver-100 bg-paper p-3 sm:flex md:w-52">
           <img
             src={o.image_url}
             alt={o.title}
             loading="lazy"
-            className="max-h-36 w-auto max-w-full rounded-xl object-contain md:max-h-44"
+            className="max-h-28 w-auto max-w-full rounded-lg object-contain md:max-h-36"
           />
         </div>
       )}
@@ -119,7 +120,7 @@ function Categories({ categories }) {
       <div className="flex gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-8 lg:overflow-visible">
         {list.map((c) => (
           <Link key={c.slug} to={c.slug === 'used' ? '/used' : `/category/${c.slug}`} className="group flex w-[4.5rem] shrink-0 flex-col items-center gap-2 sm:w-20 lg:w-auto">
-            <span className="block aspect-square w-16 overflow-hidden rounded-full bg-white shadow-card ring-2 ring-transparent transition duration-300 group-hover:-translate-y-1 group-hover:ring-ink/20 group-hover:shadow-soft sm:w-20 lg:w-full">
+            <span className="relative block aspect-square w-16 overflow-hidden rounded-full bg-white shadow-card ring-2 ring-transparent transition duration-300 group-hover:-translate-y-1 group-hover:ring-ink/20 group-hover:shadow-soft sm:w-20 lg:w-full">
               {c.image_url ? (
                 <img src={c.image_url} alt={c.name} loading="lazy" onError={imgFallback} className="size-full object-cover transition duration-300 group-hover:scale-110" />
               ) : (
@@ -127,6 +128,7 @@ function Categories({ categories }) {
                   <CategoryIcon icon={c.icon} className="size-7 text-ink" />
                 </span>
               )}
+              {c.image_url && <BrandBand variant="circle" />}
             </span>
             <span className="text-center text-[11px] font-bold leading-tight text-ink">{c.name}</span>
           </Link>
@@ -178,7 +180,7 @@ function TopupBanner() {
             <span className="inline-block rounded-full bg-flame px-3 py-1 text-[10px] font-extrabold text-white">جديد</span>
             <h3 className="mt-2 text-xl font-extrabold md:text-2xl">شحن تطبيقات وألعاب</h3>
             <p className="mt-1 line-clamp-2 text-xs text-silver-300 md:text-sm">
-              أكثر من 80 لعبة وتطبيق — شدات، جواهر، عملات، بطاقات واشتراكات · الدفع عبر USDT 💰
+              أكثر من 60 خدمة و200 باقة — شدات ببجي وفري فاير، بيس وفيفا، متابعين، اشتراكات وبطاقات · الدفع عبر USDT 💰
             </p>
           </div>
           <span className="hidden shrink-0 items-center gap-1.5 rounded-full bg-white px-6 py-2.5 text-xs font-extrabold text-ink transition group-hover:bg-silver-100 active:scale-95 sm:flex">
